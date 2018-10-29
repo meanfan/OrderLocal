@@ -1,0 +1,53 @@
+{
+  "name":"dishes",
+  "count":4,
+  "dishSingle":[
+    {
+      "id":1,
+      "name":"藤椒汉堡",
+      "tag":"汉堡/卷",
+      "isFeature":true,
+      "flavour":["不辣","微辣","特辣"],
+      "desc":"藤椒双层堡x1",
+      "price":19.0,
+      "picPath":"dish_pic_1.jpg"
+    },
+    {
+      "id":2,
+      "name":"可百事乐",
+      "tag":"饮料",
+      "isFeature":true,
+      "flavour":[],
+      "desc":"可百事乐400ml x1",
+      "price":4.0,
+      "picPath":"dish_pic_2.jpg"
+
+    },
+    {
+      "id":3,
+      "name":"藤椒鸡腿卷",
+      "tag":"汉堡/卷",
+      "isFeature":true,
+      "flavour":["辣","不辣"],
+      "desc":"藤椒鸡腿卷x1",
+      "price":12.0,
+      "picPath":"dish_pic_3.jpg"
+    }
+  ],
+  "DishPackage":[
+    {
+      "id":4,
+      "name":"藤椒汉堡套餐",
+      "tag":"套餐",
+      "isFeature":true,
+      "dishes":[
+        {"id":1,"amount":1},
+        {"id":2,"amount":1},
+        {"id":3,"amount":2}
+      ],
+      "desc":"藤椒汉堡x1+可乐x1+藤椒鸡腿卷x2",
+      "price":40.0,
+      "picPath":"dish_pic_4.jpg"
+    }
+  ]
+}
