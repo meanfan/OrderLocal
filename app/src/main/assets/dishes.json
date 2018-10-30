@@ -3,7 +3,7 @@
   "count":4,
   "dishSingle":[
     {
-      "id":1,
+      "id":11,
       "name":"藤椒汉堡",
       "tag":"汉堡/卷",
       "isFeature":true,
@@ -13,18 +13,27 @@
       "picPath":"dish_pic_1.jpg"
     },
     {
-      "id":2,
-      "name":"可百事乐",
-      "tag":"饮料",
-      "isFeature":true,
-      "flavour":[],
-      "desc":"可百事乐400ml x1",
-      "price":4.0,
-      "picPath":"dish_pic_2.jpg"
-
+      "id":12,
+      "name":"香辣鸡腿堡",
+      "tag":"汉堡/卷",
+      "isFeature":false,
+      "flavour":["不辣","微辣","特辣"],
+      "desc":"香辣鸡腿堡x1",
+      "price":18.0,
+      "picPath":"dish_pic_1.jpg"
     },
     {
-      "id":3,
+      "id":21,
+      "name":"老北京鸡肉卷",
+      "tag":"汉堡/卷",
+      "isFeature":true,
+      "flavour":["不辣","辣"],
+      "desc":"老北京鸡肉卷x1",
+      "price":14.0,
+      "picPath":"dish_pic_3.jpg"
+    },
+    {
+      "id":22,
       "name":"藤椒鸡腿卷",
       "tag":"汉堡/卷",
       "isFeature":true,
@@ -32,9 +41,39 @@
       "desc":"藤椒鸡腿卷x1",
       "price":12.0,
       "picPath":"dish_pic_3.jpg"
+    },
+    {
+      "id":31,
+      "name":"可百事乐(大杯)",
+      "tag":"饮料",
+      "isFeature":true,
+      "flavour":[],
+      "desc":"可百事乐800ml x1",
+      "price":4.0,
+      "picPath":"dish_pic_2.jpg"
+    },
+    {
+      "id":31,
+      "name":"可百事乐(中杯)",
+      "tag":"饮料",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"可百事乐600ml x1",
+      "price":4.0,
+      "picPath":"dish_pic_2.jpg"
+    },
+    {
+      "id":31,
+      "name":"可百事乐(小杯)",
+      "tag":"饮料",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"可百事乐300ml x1",
+      "price":4.0,
+      "picPath":"dish_pic_2.jpg"
     }
   ],
-  "DishPackage":[
+  "dishPackage":[
     {
       "id":4,
       "name":"藤椒汉堡套餐",

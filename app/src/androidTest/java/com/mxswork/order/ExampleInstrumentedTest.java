@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.mxswork.order.pojo.DishImpl;
+import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.utils.FileUtils;
 import com.mxswork.order.utils.LocalJsonHelper;
 
@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testGetDishes() {
-        List<DishImpl> dishes = LocalJsonHelper.getDishes(appContext);
+        List<Dish> dishes = LocalJsonHelper.getDishes(appContext);
         assertNotNull(dishes);
         assertNotEquals(dishes.size(),0);
     }

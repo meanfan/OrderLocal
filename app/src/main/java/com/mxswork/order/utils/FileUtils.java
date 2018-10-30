@@ -20,7 +20,7 @@ public class FileUtils {
             InputStream inputStream = context.getAssets().open(sourceFileName);
             //生产用，getFilesDir() 获得应用内部目录 /data/data/<包名>/files
             //File file = new File(context.getFilesDir().getPath() + File.separator + fileName);
-            //测试用，getExternalFilesDir() 获得应用在外部存储上的目录 /sdcard/Android/<包名>/files
+            //测试用，自定义getExternalFilesDir() 获得应用在外部存储上的目录 /sdcard/Android/<包名>/files
             File file = new File(getExternalFilesDir( context,Environment.DIRECTORY_DOCUMENTS) + File.separator + targetFileName);
             if(!file.exists() || file.length()==0) {
                 FileOutputStream fos =new FileOutputStream(file);//如果文件不存在，FileOutputStream会自动创建文件

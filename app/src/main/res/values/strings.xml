@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Order</string>
+    <string name="app_name">点餐系统</string>
+    <string name="title_activity_menu">点餐系统</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="menu_list">菜单</string>
+    <string name="order_list">订单</string>
+    <string name="mine">我的</string>
+    <string name="thisFirstPage">这是第一个页面</string>
+    <string name="thisSecondPage">这是第二个页面</string>
+    <string name="thisThirdPage">这是第三个页面</string>
+    <string name="hello">点击进入</string>
 </resources>

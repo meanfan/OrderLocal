@@ -6,7 +6,7 @@ import java.util.List;
 public class Order {
     private int id;
     private User user;
-    private List<DishImpl> dishes;
+    private List<Dish> dishes;
     private int desk;
     private Date time;
     private float total_price;
@@ -27,11 +27,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<DishImpl> getDishes() {
+    public List<Dish> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<DishImpl> dishes) {
+    public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
     }
 

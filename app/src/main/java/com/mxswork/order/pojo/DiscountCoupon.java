@@ -10,7 +10,7 @@ public class DiscountCoupon implements Coupon{
     public float calcPrice(Order order) {
         if(order!=null){
             float price_sum=0;
-            for(DishImpl dish:order.getDishes()){
+            for(Dish dish:order.getDishes()){
                 price_sum+=dish.getPrice()*dish.getAmount();
             }
             return price_sum;
