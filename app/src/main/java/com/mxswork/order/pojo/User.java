@@ -1,12 +1,13 @@
 package com.mxswork.order.pojo;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class User {
     private int uid;
     private String phone;
-    private List<Order> orders;
-    private List<Coupon> coupons;
+    private int[] ordersId;
+    private int[] couponsId;
     private String name;
 
     public int getUid() {
@@ -25,20 +26,20 @@ public class User {
         this.phone = phone;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public int[] getOrdersId() {
+        return ordersId;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrdersId(int[] ordersId) {
+        this.ordersId = ordersId;
     }
 
-    public List<Coupon> getCoupons() {
-        return coupons;
+    public int[] getCouponsId() {
+        return couponsId;
     }
 
-    public void setCoupons(List<Coupon> coupons) {
-        this.coupons = coupons;
+    public void setCouponsId(int[] couponsId) {
+        this.couponsId = couponsId;
     }
 
     public String getName() {
@@ -47,5 +48,16 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", phone='" + phone + '\'' +
+                ", ordersId=" + Arrays.toString(ordersId) +
+                ", couponsId=" + Arrays.toString(couponsId) +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

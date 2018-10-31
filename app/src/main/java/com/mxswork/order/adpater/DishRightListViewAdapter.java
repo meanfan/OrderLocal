@@ -1,4 +1,4 @@
-package com.mxswork.order;
+package com.mxswork.order.adpater;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,24 +9,26 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mxswork.order.R;
 import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.utils.LocalJsonHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeadListViewAdapter extends BaseAdapter {
+public class DishRightListViewAdapter extends BaseAdapter implements View.OnClickListener {
     public static final int HEAD_GONE = 0;
     public static final int HEAD_VISIABLE = 1;
     public static final int HEAD_ON_TOP = 2;
     private Context context;
+    private InnerItemOnClickListener innerItemOnClickListener;
     private List<Dish> dishes = new ArrayList<>();
 
-    public HeadListViewAdapter(Context context) {
+    public DishRightListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setDishes(List<Dish> dishes){
+    public void updateDishesList(List<Dish> dishes){
         this.dishes.clear();
         this.dishes.addAll(dishes);
     }
@@ -61,10 +63,16 @@ public class HeadListViewAdapter extends BaseAdapter {
             vh.tv_dish_amount_num = view.findViewById(R.id.tv_dish_amount_num);
             vh.ib_dish_amount_plus = view.findViewById(R.id.ib_dish_amount_plus);
             view.setTag(vh);
+            vh.ib_dish_amount_plus.setOnClickListener(this);
+            vh.ib_dish_amount_sub.setOnClickListener(this);
         }else {
             vh = (ViewHolder) view.getTag();
         }
         Dish dish = dishes.get(pos);
+
+        vh.ib_dish_amount_plus.setTag(R.id.tag_dish_id,dish.getId());
+        vh.ib_dish_amount_plus.setTag(R.id.tag_list_tv_amount,vh.tv_dish_amount_num);
+        vh.ib_dish_amount_plus.setTag(R.id.tag_list_ib_amount_sub,vh.ib_dish_amount_sub);
 
         vh.tv_tag.setText(dish.getTag());
         vh.iv_dish_pic.setImageBitmap(LocalJsonHelper.getDishPic(context,dish));
@@ -109,7 +117,8 @@ public class HeadListViewAdapter extends BaseAdapter {
         }
     }
 
-    static class ViewHolder{
+    public static class ViewHolder{
+        public int dishId;
         TextView tv_tag;
         ImageView iv_dish_pic;
         TextView tv_dish_title;
@@ -118,7 +127,17 @@ public class HeadListViewAdapter extends BaseAdapter {
         ImageButton ib_dish_amount_sub;
         TextView tv_dish_amount_num;
         ImageButton ib_dish_amount_plus;
+    }
 
+    public interface InnerItemOnClickListener{
+        void itemClick(View v);
+    }
+    public void setOnInnerItemOnClickListener(InnerItemOnClickListener listener){
+        innerItemOnClickListener = listener;
+    }
 
+    @Override
+    public void onClick(View view) {
+        innerItemOnClickListener.itemClick(view);
     }
 }

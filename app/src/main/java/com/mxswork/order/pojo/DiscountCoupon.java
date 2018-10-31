@@ -8,13 +8,13 @@ public class DiscountCoupon implements Coupon{
 
     @Override
     public float calcPrice(Order order) {
-        if(order!=null){
-            float price_sum=0;
-            for(Dish dish:order.getDishes()){
-                price_sum+=dish.getPrice()*dish.getAmount();
-            }
-            return price_sum;
-        }
+//        if(order!=null){
+//            float price_sum=0;
+//            for(Dish dish:order.readDishes()){
+//                price_sum+=dish.getPrice()*dish.getAmount();
+//            }
+//            return price_sum;
+//        }
         return 0;
     }
 

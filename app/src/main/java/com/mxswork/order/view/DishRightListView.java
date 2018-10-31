@@ -1,4 +1,4 @@
-package com.mxswork.order;
+package com.mxswork.order.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,28 +6,30 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
 
-public class HeadListView extends ListView {
+import com.mxswork.order.adpater.DishRightListViewAdapter;
+
+public class DishRightListView extends ListView {
     private boolean isHeadViewVisiable;
     private View headView;
     private int headViewWidth;
     private int headViewHeight;
-    private HeadListViewAdapter adapter;
+    private DishRightListViewAdapter adapter;
 
-    public HeadListView(Context context) {
+    public DishRightListView(Context context) {
         super(context);
     }
 
-    public HeadListView(Context context, AttributeSet attrs) {
+    public DishRightListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HeadListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DishRightListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     public void setHeadView(View headView){
         this.headView = headView;
-        adapter = (HeadListViewAdapter) getAdapter();
+        adapter = (DishRightListViewAdapter) getAdapter();
     }
 
     @Override
@@ -66,11 +68,11 @@ public class HeadListView extends ListView {
         }
         int state = adapter.getHeadViewState(pos);
         switch (state){
-            case HeadListViewAdapter.HEAD_GONE: {
+            case DishRightListViewAdapter.HEAD_GONE: {
                 isHeadViewVisiable = false;
                 break;
             }
-            case HeadListViewAdapter.HEAD_VISIABLE:{
+            case DishRightListViewAdapter.HEAD_VISIABLE:{
                 //设置HeadView内容
                 adapter.configureHead(headView,pos);
                 //HeadView放到顶部
@@ -80,7 +82,7 @@ public class HeadListView extends ListView {
                 isHeadViewVisiable = true;
                 break;
             }
-            case HeadListViewAdapter.HEAD_ON_TOP:{
+            case DishRightListViewAdapter.HEAD_ON_TOP:{
                 View firstView = getChildAt(0);
 
                 //获得firstView底部到父布局顶的距离

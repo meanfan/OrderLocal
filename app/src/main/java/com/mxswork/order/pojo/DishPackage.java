@@ -25,7 +25,7 @@ public class DishPackage extends Dish{
         return stringBuilder.toString();
     }
 
-    class DishInfo{
+    static class DishInfo{
         private int id;
         private int amount;
 

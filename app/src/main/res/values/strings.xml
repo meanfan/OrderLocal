@@ -11,4 +11,8 @@
     <string name="thisSecondPage">这是第二个页面</string>
     <string name="thisThirdPage">这是第三个页面</string>
     <string name="hello">点击进入</string>
+
+    <item type="id" name="tag_dish_id"/>
+    <item type="id" name="tag_list_tv_amount"/>
+    <item type="id" name="tag_list_ib_amount_sub"/>
 </resources>

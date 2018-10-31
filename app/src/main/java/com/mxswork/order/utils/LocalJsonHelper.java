@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.pojo.DishSingle;
 import com.mxswork.order.pojo.DishPackage;
+import com.mxswork.order.pojo.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,11 @@ public class LocalJsonHelper {
         return gson.fromJson(json,type);
     }
 
+    public static String object2Json(Object o){
+        Gson gson = new Gson();
+        return gson.toJson(o);
+    }
+
     public static Bitmap getBitmap(Context context, String fileName){
 
         AssetManager assetManager = context.getAssets();
@@ -61,12 +67,22 @@ public class LocalJsonHelper {
         return null;
     }
 
-    public static List<Dish> getDishes(Context context){
+    public static List<Dish> readDishes(Context context){
         String json = LocalJsonHelper.getJson(context,"dishes.json");
         List<Dish> dishes = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("dishSingle");
+
+            JSONArray jsonArray = jsonObject.getJSONArray("dishPackage");
+            Log.d(TAG, jsonArray.toString());
+            for(int i=0;i<jsonArray.length();i++){
+                DishPackage pack = LocalJsonHelper.Json2Object(jsonArray.get(i).toString(),DishPackage.class);
+                pack.setAmount(0);
+                dishes.add(pack);
+                Log.d(TAG, "getDishPackage: "+pack.toString());
+            }
+
+            jsonArray = jsonObject.getJSONArray("dishSingle");
             for(int i=0;i<jsonArray.length();i++){
                 DishSingle dish = LocalJsonHelper.Json2Object(jsonArray.get(i).toString(),DishSingle.class);
                 dish.setAmount(0);
@@ -75,14 +91,6 @@ public class LocalJsonHelper {
                 Log.d(TAG, "getDishSingle: "+dish.toString());
             }
 
-            jsonArray = jsonObject.getJSONArray("dishPackage");
-            Log.d(TAG, jsonArray.toString());
-            for(int i=0;i<jsonArray.length();i++){
-                DishPackage pack = LocalJsonHelper.Json2Object(jsonArray.get(i).toString(),DishPackage.class);
-                pack.setAmount(0);
-                dishes.add(pack);
-                Log.d(TAG, "getDishPackage: "+pack.toString());
-            }
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -92,4 +100,25 @@ public class LocalJsonHelper {
     public static Bitmap getDishPic(Context context,Dish dish){
         return getBitmap(context,dish.getPicPath());
     }
+
+    public static List<User> readUser(Context context){
+        String json = LocalJsonHelper.getJson(context,"users.json");
+        List<User> users = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("user");
+            Log.d(TAG, jsonArray.toString());
+            for(int i=0;i<jsonArray.length();i++){
+                User user = LocalJsonHelper.Json2Object(jsonArray.get(i).toString(),User.class);
+                users.add(user);
+                Log.d(TAG, "getUid: "+user.toString());
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+
 }

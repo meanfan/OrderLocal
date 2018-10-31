@@ -1,7 +1,5 @@
 package com.mxswork.order.pojo;
 
-import java.util.List;
-
 public class Dish {
     protected int id;
     protected String name;
@@ -11,6 +9,7 @@ public class Dish {
     protected float price;
     protected String picPath;
     protected int amount;
+    protected String selectedFlavour;
 
     public int getId() {
         return id;
@@ -76,7 +75,11 @@ public class Dish {
         this.amount = amount;
     }
 
+    public String getSelectedFlavour() {
+        return selectedFlavour;
+    }
 
-
-
+    public void setSelectedFlavour(String selectedFlavour) {
+        this.selectedFlavour = selectedFlavour;
+    }
 }

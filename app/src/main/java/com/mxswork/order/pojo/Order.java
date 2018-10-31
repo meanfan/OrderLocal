@@ -1,12 +1,11 @@
 package com.mxswork.order.pojo;
 
 import java.util.Date;
-import java.util.List;
 
 public class Order {
     private int id;
-    private User user;
-    private List<Dish> dishes;
+    private int uid;
+    private DishInfo[] dishes;
     private int desk;
     private Date time;
     private float total_price;
@@ -19,19 +18,19 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public int getUid() {
+        return uid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
-    public List<Dish> getDishes() {
+    public DishInfo[] getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<Dish> dishes) {
+    public void setDishes(DishInfo[] dishes) {
         this.dishes = dishes;
     }
 
@@ -57,5 +56,26 @@ public class Order {
 
     public void setTotal_price(float total_price) {
         this.total_price = total_price;
+    }
+
+    class DishInfo{
+        int id;
+        int count;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
     }
 }
