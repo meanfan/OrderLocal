@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorListGrayBg">#cccccc</color>
     <color name="colorListWhiteBg">#ffffff</color>
+    <color name="colorButtonPurchaseActive">#3A4CFF</color>
+    <color name="colorButtonPurchaseDisable">#CCCCCC</color>
+    <color name="colorButtonPurchasePress">#3A0CF0</color>
 </resources>

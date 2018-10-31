@@ -1,13 +1,14 @@
 package com.mxswork.order.pojo;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class Order {
     private int id;
     private int uid;
-    private DishInfo[] dishes;
+    private OrderDishInfo[] dishes;
     private int desk;
-    private Date time;
+    private long time;
     private float total_price;
 
     public int getId() {
@@ -26,11 +27,11 @@ public class Order {
         this.uid = uid;
     }
 
-    public DishInfo[] getDishes() {
+    public OrderDishInfo[] getDishes() {
         return dishes;
     }
 
-    public void setDishes(DishInfo[] dishes) {
+    public void setDishes(OrderDishInfo[] dishes) {
         this.dishes = dishes;
     }
 
@@ -42,11 +43,11 @@ public class Order {
         this.desk = desk;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -58,24 +59,15 @@ public class Order {
         this.total_price = total_price;
     }
 
-    class DishInfo{
-        int id;
-        int count;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", dishes=" + Arrays.toString(dishes) +
+                ", desk=" + desk +
+                ", time=" + time +
+                ", total_price=" + total_price +
+                '}';
     }
 }

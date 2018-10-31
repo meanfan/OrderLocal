@@ -1,16 +1,12 @@
-{
-  "name":"orders",
-  "count":1,
-  "order":[
-    {
-      "id":1,
-      "uid":10,
-      "dishes":[
-        {"id":4, "count":1}
-      ],
-      "desk":1,
-      "time":1,
-      "total_price":0
-    }
-  ]
-}
+[
+  {
+    "id":1,
+    "uid":10,
+    "dishes":[
+      {"id":4, "count":1,"flavour":""}
+    ],
+    "desk":1,
+    "time":1,
+    "total_price":0
+  }
+]

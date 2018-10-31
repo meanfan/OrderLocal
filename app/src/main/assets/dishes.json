@@ -65,11 +65,11 @@
       "isFeature":true,
       "flavour":[],
       "desc":"可百事乐800ml x1",
-      "price":4.0,
+      "price":5.0,
       "picPath":"dish_pic_2.jpg"
     },
     {
-      "id":31,
+      "id":32,
       "name":"可百事乐(中杯)",
       "tag":"饮料",
       "isFeature":false,
@@ -79,13 +79,13 @@
       "picPath":"dish_pic_2.jpg"
     },
     {
-      "id":31,
+      "id":33,
       "name":"可百事乐(小杯)",
       "tag":"饮料",
       "isFeature":false,
       "flavour":[],
       "desc":"可百事乐300ml x1",
-      "price":4.0,
+      "price":3.0,
       "picPath":"dish_pic_2.jpg"
     }
   ]

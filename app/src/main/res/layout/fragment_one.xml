@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:id="@+id/tv_recommend"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="滚动推荐"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/tv_recommend"
+        android:layout_above="@+id/rl_cart"
         android:orientation="horizontal">
         <ListView android:id="@+id/lv_dish_left"
             android:layout_width="80dp"
@@ -20,4 +25,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_cart"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:id="@+id/tv_cart_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:text="0 元"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_cart_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:text="未选择"/>
+
+        <Button
+            android:id="@+id/btn_purchase"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="下单"
+            android:enabled="false"
+            android:textColor="#ffffff"
+            android:minHeight="0dp"
+            android:background="@drawable/style_button_purchase"/>
+    </RelativeLayout>
+
+</RelativeLayout>

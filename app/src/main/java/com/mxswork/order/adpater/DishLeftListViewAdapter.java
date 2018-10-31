@@ -10,7 +10,6 @@ import com.mxswork.order.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DishLeftListViewAdapter extends BaseAdapter {
     private List<String> tagList;

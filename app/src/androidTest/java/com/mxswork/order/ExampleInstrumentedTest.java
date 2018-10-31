@@ -51,7 +51,7 @@ public class ExampleInstrumentedTest {
     }
     @Test
     public void readUser(){
-        User user = LocalJsonHelper.readUser(appContext).get(0);
-        Log.d(TAG, "readUser: \n"+user.toString());
+        User user = LocalJsonHelper.readUsers(appContext).get(0);
+        Log.d(TAG, "readUsers: \n"+user.toString());
     }
 }
