@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,10 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringBufferInputStream;
-import java.io.StringWriter;
+
 
 public class FileUtils {
     public static final String TAG = "FileUtil";
@@ -29,14 +26,16 @@ public class FileUtils {
             //生产用，getFilesDir() 获得应用内部目录 /data/data/<包名>/files
             File file = new File(context.getFilesDir().getPath() + File.separator + targetFileName);
             //测试用，自定义getExternalFilesDir() 获得应用在外部存储上的目录 /sdcard/Android/<包名>/files
-            //File file = new File(getExternalFilesDir( context,Environment.DIRECTORY_DOCUMENTS) + File.separator + targetFileName);
+            //File file = new File(getExternalFilesDir(context,Environment.DIRECTORY_DOCUMENTS) + File.separator + targetFileName);
             if(!file.exists() || file.length()==0) {
-                FileOutputStream fos =new FileOutputStream(file);//如果文件不存在，FileOutputStream会自动创建文件
-                BufferedOutputStream bos = new BufferedOutputStream(fos);
-                bos.write(inputStream.read());
-                bos.flush();
+                FileOutputStream fos=new FileOutputStream(file);
+                int len=-1;
+                byte[] buffer=new byte[1024];
+                while ((len=inputStream.read(buffer))!=-1){
+                    fos.write(buffer,0,len);
+                }
+                fos.flush();
                 inputStream.close();
-                bos.close();
                 fos.close();
                 Log.d(TAG, "copyAssetsFile2DiskFileDir: " + sourceFileName + ", success");
                 return true;
@@ -57,7 +56,7 @@ public class FileUtils {
         FileOutputStream out = null;
         BufferedWriter writer = null;
         try{
-            out = context.openFileOutput("data", Context.MODE_PRIVATE);
+            out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             writer = new BufferedWriter(new OutputStreamWriter(out));
             writer.write(sourceString);
         }catch (IOException e){
@@ -79,7 +78,7 @@ public class FileUtils {
         try{
             in = context.openFileInput(fileName);
             reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null){
                 content.append(line);
             }

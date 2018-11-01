@@ -1,10 +1,11 @@
 package com.mxswork.order;
 
-import android.app.Fragment;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
     }
     private void initData(){
         loadDishes();
+        //FileUtils.copyAssetsFile2DiskFileDir(getContext(),LocalJsonHelper.FILENAME_DISH);
         FileUtils.copyAssetsFile2DiskFileDir(getActivity(),LocalJsonHelper.FILENAME_ORDER);
         FileUtils.copyAssetsFile2DiskFileDir(getActivity(),LocalJsonHelper.FILENAME_USER);
     }
@@ -120,7 +122,6 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
                 if(isScroll){
                     dishRightListView.configHeadView(i);
                     String tag = dishes.get(i).getTag();
-                    int lfPos;
                     for(int ii=0;ii<tags.size();ii++){
                         if(tags.get(ii).compareTo(tag)==0){
                             dishLeftListView.smoothScrollToPosition(ii);
@@ -138,8 +139,10 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
             public void onClick(View view) {
                 Order order = generateOrder();
                 Log.d(TAG, "onClick: "+order.toString());
+                LocalJsonHelper.insertOrder(getActivity(),order);
                 Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
-                cleanDishSelected();
+                //cleanDishSelected();
+
 
             }
         });
@@ -198,7 +201,6 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         }
         return tags;
     }
-
 
     private View getHeadTextView() {
         TextView itemView = new TextView(getActivity());

@@ -1,7 +1,6 @@
 package com.mxswork.order.pojo;
 
 import java.util.Arrays;
-import java.util.Date;
 
 public class Order {
     private int id;

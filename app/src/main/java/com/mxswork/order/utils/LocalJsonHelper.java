@@ -128,6 +128,7 @@ public class LocalJsonHelper {
 
     public static List<Order> readOrders(Context context){
         String json = readJsonFromDisk(context,FILENAME_ORDER);
+        Log.d(TAG, "readOrders: JSON:"+json);
         List<Order> orders = new ArrayList<>();
         try{
             JSONArray jsonArray = new JSONArray(json);
@@ -155,17 +156,23 @@ public class LocalJsonHelper {
     }
 
     public static int getNewOrderId(Context context){
-        String json = LocalJsonHelper.readJsonFromAssets(context,"order.json");
+        String json = LocalJsonHelper.readJsonFromDisk(context,FILENAME_ORDER);
         List<Order> orders = new ArrayList<>();
         try{
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("order");
+            JSONArray jsonArray = new JSONArray(json);
             if(jsonArray.length() == 0){
                 return 0;
             }
-            //获取最后一个的id (!要求按id从小到大顺序存储)
-            int index = jsonArray.getJSONObject(jsonArray.length()-1).getInt("id");
-            index++;
+            //获取下一个的id (!要求按id从小到大顺序存储)
+            int max_id = 0;
+            for(int i=0;i<jsonArray.length();i++){
+                int id = jsonArray.getJSONObject(i).getInt("id");
+                if(id>max_id){
+                    max_id = id;
+                }
+            }
+            int index = max_id + 1;
+            Log.d(TAG, "getNewOrderId: "+index);
             return index;
         }catch (JSONException e){
             e.printStackTrace();
