@@ -9,9 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class menu extends AppCompatActivity {
+    public static String TAG ="Menu";
+
+    private List<Fragment> fragments = new ArrayList<>();
 
     private String[] titles = {"菜单", "订单", "我的"};
 
@@ -28,12 +35,31 @@ public class menu extends AppCompatActivity {
        // }
         TabLayout tabLayout = findViewById(R.id.tabs);
 //      tabLayout.addTab();//添加
-        ViewPager viewPager = findViewById(R.id.vp);
+        final ViewPager viewPager = findViewById(R.id.vp);
 
         MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int pos = tab.getPosition();
+                //viewPager.setCurrentItem(pos);
+                ((FragmentTwo)fragments.get(1)).refresh();
+                Log.d(TAG, "onTabSelected: ");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     //ViewPager的适配器
@@ -57,6 +83,7 @@ public class menu extends AppCompatActivity {
                     fragment = new FragmentThree();
                     break;
             }
+            fragments.add(fragment);
             return fragment;
         }
 
@@ -71,9 +98,10 @@ public class menu extends AppCompatActivity {
             return titles[position];
         }
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected: ");
         if (item.getItemId() == android.R.id.home) {
             finish();
         }

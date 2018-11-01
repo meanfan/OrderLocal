@@ -1,6 +1,8 @@
 package com.mxswork.order;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mxswork.order.adpater.BannerViewAdapter;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
 import com.mxswork.order.pojo.Dish;
@@ -28,6 +31,7 @@ import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.FileUtils;
 import com.mxswork.order.utils.LocalJsonHelper;
+import com.mxswork.order.view.BannerView;
 import com.mxswork.order.view.DishRightListView;
 
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ import java.util.List;
 
 public class FragmentOne extends Fragment implements DishRightListViewAdapter.InnerItemOnClickListener {
     public static final String TAG = "FragmentOne";
+    private BannerView mBannerView;
+    private BannerViewAdapter adapter;
     private ListView dishLeftListView;
     private DishRightListView dishRightListView;
     private DishLeftListViewAdapter leftAdapter;
@@ -45,6 +51,7 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
     private TextView tv_cart_info;
     private TextView tv_cart_price;
     private List<Dish> dishes;
+    private List<Dish> featuredDishes;
     private List<String> tags;
     private List<Integer> firstTagInDishes;
     private int selected_dish_count;
@@ -80,6 +87,13 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
     }
 
     private void initView(){
+        mBannerView = getActivity().findViewById(R.id.banner_view);
+        adapter = new BannerViewAdapter(featuredDishes);
+        if(mBannerView == null){
+            Log.d(TAG, "initView: null banner view");
+        }
+        mBannerView.setAdapter(adapter);
+
         leftAdapter = new DishLeftListViewAdapter(getActivity());
         leftAdapter.updateTagList(getTags());
 
@@ -142,8 +156,6 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
                 LocalJsonHelper.insertOrder(getActivity(),order);
                 Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
                 //cleanDishSelected();
-
-
             }
         });
     }
@@ -184,6 +196,16 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
 
     private void loadDishes(){
         dishes = LocalJsonHelper.readDishes(getActivity());
+        if(featuredDishes == null){
+            featuredDishes = new ArrayList<>();
+        }else {
+            featuredDishes.clear();
+        }
+        for(Dish dish:dishes){
+            if(dish.isFeature()){
+                featuredDishes.add(dish);
+            }
+        }
     }
 
     private List<String> getTags(){
@@ -237,8 +259,24 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
                 if(dish instanceof DishSingle){
                     Log.d(TAG, "itemClick: DishSingle");
                     List<String> flavours = ((DishSingle)dish).getFlavour();
+                    String[] flavoursArr = new String[flavours.size()];
+                    for(int i=0;i<flavours.size();i++){
+                        flavoursArr[i] = flavours.get(i);
+                    }
                     if(flavours.size()>0){
                         //TODO 弹窗选择辣度
+                        AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
+                        AlertDialog alertDialog = build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+
+                            }
+                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                
+                            }
+                        }).create();
                         //先只选第一个
                         dish.setSelectedFlavour(((DishSingle) dish).getFlavour().get(0));
                     }

@@ -1,6 +1,8 @@
 package com.mxswork.order.pojo;
 
 
+import android.support.annotation.BinderThread;
+
 import java.util.List;
 
 public class DishSingle extends Dish {

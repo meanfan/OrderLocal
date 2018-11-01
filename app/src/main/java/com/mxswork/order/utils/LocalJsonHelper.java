@@ -142,6 +142,16 @@ public class LocalJsonHelper {
         return orders;
     }
 
+    public static Dish readDishById(Context context,int id){
+        List<Dish> dishes = readDishes(context);
+        for(Dish dish:dishes){
+            if(dish.getId()==id){
+                return dish;
+            }
+        }
+        return null;
+    }
+
     public static void writeOrders(Context context,String json){
         FileUtils.writeString2DiskFileDir(context,json,FILENAME_ORDER);
     }

@@ -62,7 +62,7 @@
       "id":31,
       "name":"可百事乐(大杯)",
       "tag":"饮料",
-      "isFeature":true,
+      "isFeature":false,
       "flavour":[],
       "desc":"可百事乐800ml x1",
       "price":5.0,

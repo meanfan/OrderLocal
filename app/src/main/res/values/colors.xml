@@ -8,4 +8,5 @@
     <color name="colorButtonPurchaseActive">#3A4CFF</color>
     <color name="colorButtonPurchaseDisable">#CCCCCC</color>
     <color name="colorButtonPurchasePress">#3A0CF0</color>
+    <color name="transparency">#8000</color>
 </resources>

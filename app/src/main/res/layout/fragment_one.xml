@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/tv_recommend"
+    <com.mxswork.order.view.BannerView
+        android:id="@+id/banner_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:text="滚动推荐"/>
+        android:layout_height="wrap_content">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/views_container"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"/>
+        <LinearLayout
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <LinearLayout
+                android:id="@+id/point_container"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" />
+        </LinearLayout>
+    </com.mxswork.order.view.BannerView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_recommend"
+        android:layout_below="@id/banner_view"
         android:layout_above="@+id/rl_cart"
         android:orientation="horizontal">
         <ListView android:id="@+id/lv_dish_left"
