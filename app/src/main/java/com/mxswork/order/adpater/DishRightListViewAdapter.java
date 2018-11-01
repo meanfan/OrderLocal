@@ -21,7 +21,7 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
     public static final int HEAD_VISIABLE = 1;
     public static final int HEAD_ON_TOP = 2;
     private Context context;
-    private InnerItemOnClickListener innerItemOnClickListener;
+    private DishItemOnClickListener dishItemOnClickListener;
     private List<Dish> dishes = new ArrayList<>();
 
     public DishRightListViewAdapter(Context context) {
@@ -69,7 +69,6 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
             vh = (ViewHolder) view.getTag();
         }
         Dish dish = dishes.get(pos);
-
         vh.ib_dish_amount_plus.setTag(R.id.tag_dish_id,dish.getId());
         vh.ib_dish_amount_plus.setTag(R.id.tag_list_tv_amount,vh.tv_dish_amount_num);
         vh.ib_dish_amount_plus.setTag(R.id.tag_list_ib_amount_sub,vh.ib_dish_amount_sub);
@@ -122,7 +121,6 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
     }
 
     public static class ViewHolder{
-        public int dishId;
         TextView tv_tag;
         ImageView iv_dish_pic;
         TextView tv_dish_title;
@@ -133,15 +131,15 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
         ImageButton ib_dish_amount_plus;
     }
 
-    public interface InnerItemOnClickListener{
-        void itemClick(View v);
+    public interface DishItemOnClickListener {
+        void dishItemOnClick(View v);
     }
-    public void setOnInnerItemOnClickListener(InnerItemOnClickListener listener){
-        innerItemOnClickListener = listener;
+    public void setOnInnerItemOnClickListener(DishItemOnClickListener listener){
+        dishItemOnClickListener = listener;
     }
 
     @Override
     public void onClick(View view) {
-        innerItemOnClickListener.itemClick(view);
+        dishItemOnClickListener.dishItemOnClick(view);
     }
 }

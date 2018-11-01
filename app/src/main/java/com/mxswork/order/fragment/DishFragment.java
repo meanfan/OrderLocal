@@ -1,13 +1,16 @@
-package com.mxswork.order;
+package com.mxswork.order.fragment;
 
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +21,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.mxswork.order.OrderActivity;
+import com.mxswork.order.R;
 import com.mxswork.order.adpater.BannerViewAdapter;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
@@ -29,7 +33,6 @@ import com.mxswork.order.pojo.DishSingle;
 import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.pojo.User;
-import com.mxswork.order.utils.FileUtils;
 import com.mxswork.order.utils.LocalJsonHelper;
 import com.mxswork.order.view.BannerView;
 import com.mxswork.order.view.DishRightListView;
@@ -39,10 +42,13 @@ import java.util.Date;
 import java.util.List;
 
 
-public class FragmentOne extends Fragment implements DishRightListViewAdapter.InnerItemOnClickListener {
-    public static final String TAG = "FragmentOne";
-    private BannerView mBannerView;
-    private BannerViewAdapter adapter;
+public class DishFragment extends Fragment
+        implements AdapterView.OnItemClickListener,
+        DishRightListViewAdapter.DishItemOnClickListener,
+        BannerViewAdapter.BannerItemOnClickListener {
+    public static final String TAG = "DishFragment";
+    private BannerView bannerView;
+    private BannerViewAdapter bannerViewAdapter;
     private ListView dishLeftListView;
     private DishRightListView dishRightListView;
     private DishLeftListViewAdapter leftAdapter;
@@ -50,8 +56,9 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
     private Button btn_purchase;
     private TextView tv_cart_info;
     private TextView tv_cart_price;
+    private int position;
     private List<Dish> dishes;
-    private List<Dish> featuredDishes;
+    private List<Dish> featureDishes;
     private List<String> tags;
     private List<Integer> firstTagInDishes;
     private int selected_dish_count;
@@ -69,30 +76,18 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
     @Override
     public void onStart() {
         super.onStart();
-        initData();
         initView();
         initListener();
         selected_dish_count = 0;
         selected_dish_price = 0;
-        //默认先设置预置的游客账号
-        setUser(LocalJsonHelper.readUsers(getActivity()).get(0));
         desk = 1;
-        Log.d(TAG, "onStart: "+user.toString());
-    }
-    private void initData(){
-        loadDishes();
-        //FileUtils.copyAssetsFile2DiskFileDir(getContext(),LocalJsonHelper.FILENAME_DISH);
-        FileUtils.copyAssetsFile2DiskFileDir(getActivity(),LocalJsonHelper.FILENAME_ORDER);
-        FileUtils.copyAssetsFile2DiskFileDir(getActivity(),LocalJsonHelper.FILENAME_USER);
     }
 
     private void initView(){
-        mBannerView = getActivity().findViewById(R.id.banner_view);
-        adapter = new BannerViewAdapter(featuredDishes);
-        if(mBannerView == null){
-            Log.d(TAG, "initView: null banner view");
-        }
-        mBannerView.setAdapter(adapter);
+//        bannerView = getActivity().findViewById(R.id.banner_view);
+//        bannerViewAdapter = new BannerViewAdapter(featureDishes);
+//        bannerView.setAdapter(bannerViewAdapter);
+//        bannerViewAdapter.setBannerItemOnClickListener(this);
 
         leftAdapter = new DishLeftListViewAdapter(getActivity());
         leftAdapter.updateTagList(getTags());
@@ -107,6 +102,7 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         dishRightListView = getActivity().findViewById(R.id.lv_dish_right);
         dishRightListView.setAdapter(rightAdapter);
         dishRightListView.setHeadView(getHeadTextView());
+        dishRightListView.setOnItemClickListener(this);
 
         btn_purchase =getActivity().findViewById(R.id.btn_purchase);
         tv_cart_info = getActivity().findViewById(R.id.tv_cart_info);
@@ -121,6 +117,7 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
                 int rightPos = firstTagInDishes.get(i);
                 dishRightListView.setSelection(rightPos);
                 leftAdapter.setSelectPosition(i);
+                Log.d(TAG, "onItemClick: dishLeftListView");
             }
         });
 
@@ -132,14 +129,16 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
             }
 
             @Override
-            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+            public void onScroll(AbsListView absListView, int firstVisible, int i1, int i2) {
                 if(isScroll){
-                    dishRightListView.configHeadView(i);
-                    String tag = dishes.get(i).getTag();
-                    for(int ii=0;ii<tags.size();ii++){
-                        if(tags.get(ii).compareTo(tag)==0){
-                            dishLeftListView.smoothScrollToPosition(ii);
-                            leftAdapter.setSelectPosition(ii);
+                    dishRightListView.configHeadView(firstVisible);
+                    String tag = dishes.get(firstVisible).getTag();
+                    for(int i=0;i<tags.size();i++){
+
+                        if(TextUtils.equals(tags.get(i),tag)){
+                            Log.d(TAG, "onScroll: "+position);
+                            dishLeftListView.smoothScrollToPosition(i);
+                            leftAdapter.setSelectPosition(i);
                             break;
                         }
                     }
@@ -151,13 +150,25 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         btn_purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = generateOrder();
+                final Order order = generateOrder();
                 Log.d(TAG, "onClick: "+order.toString());
                 LocalJsonHelper.insertOrder(getActivity(),order);
-                Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(R.id.cl_snackbar),"下单成功",Snackbar.LENGTH_LONG).setAction("查看订单", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showOrderActivity(order);
+                    }
+                }).show();
                 //cleanDishSelected();
             }
         });
+    }
+
+    private void showOrderActivity(Order order){
+        Intent intent = new Intent(getActivity(),OrderActivity.class);
+        intent.putExtra("order",order); //要确保Order及其嵌套类都实现序列化接口
+        startActivity(intent);
     }
 
     private void cleanDishSelected(){
@@ -192,20 +203,6 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         order.setTime(time.getTime());
         order.setTotal_price(selected_dish_price);
         return order;
-    }
-
-    private void loadDishes(){
-        dishes = LocalJsonHelper.readDishes(getActivity());
-        if(featuredDishes == null){
-            featuredDishes = new ArrayList<>();
-        }else {
-            featuredDishes.clear();
-        }
-        for(Dish dish:dishes){
-            if(dish.isFeature()){
-                featuredDishes.add(dish);
-            }
-        }
     }
 
     private List<String> getTags(){
@@ -248,8 +245,14 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         this.user = user;
     }
 
+    public void setDishes(List<Dish> dishes){
+        this.dishes = dishes;
+    }
+
+    public void setFeatureDishes(List<Dish> dishes){this.featureDishes = dishes;}
+
     @Override
-    public void itemClick(View v) {
+    public void dishItemOnClick(View v) {
         switch (v.getId()){
             case R.id.ib_dish_amount_plus:{
                 int dishId = (Integer)v.getTag(R.id.tag_dish_id);
@@ -257,33 +260,33 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
                 ImageButton ib_sub = (ImageButton) v.getTag(R.id.tag_list_ib_amount_sub);
                 Dish dish = findDishById(dishes,dishId);
                 if(dish instanceof DishSingle){
-                    Log.d(TAG, "itemClick: DishSingle");
+                    //Log.d(TAG, "bannerItemOnClick: DishSingle");
                     List<String> flavours = ((DishSingle)dish).getFlavour();
-                    String[] flavoursArr = new String[flavours.size()];
-                    for(int i=0;i<flavours.size();i++){
-                        flavoursArr[i] = flavours.get(i);
-                    }
                     if(flavours.size()>0){
-                        //TODO 弹窗选择辣度
-                        AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
-                        AlertDialog alertDialog = build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
+                        if(((DishSingle) dish).getFlavour()== null || ((DishSingle) dish).getFlavour().size()==0){ //每种菜第一次加才让用户选择口味
+                            String[] flavoursArr = new String[flavours.size()];
+                            for(int i=0;i<flavours.size();i++){
+                                flavoursArr[i] = flavours.get(i);
+                            }
+                            AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
+                            build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int which) {
 
-                            }
-                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                
-                            }
-                        }).create();
-                        //先只选第一个
-                        dish.setSelectedFlavour(((DishSingle) dish).getFlavour().get(0));
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).create().show();
+                            //TODO 数据回传未实现, 先默认选第一个
+                            dish.setSelectedFlavour(((DishSingle) dish).getFlavour().get(0));
+                        }
                     }
                     add2Cart(dish,tv_amount,ib_sub);
-
                 }else if(dish instanceof DishPackage){
-                    Log.d(TAG, "itemClick: DishPackage");
+                    //Log.d(TAG, "bannerItemOnClick: DishPackage");
                     add2Cart(dish,tv_amount,ib_sub);
                 }
                 break;
@@ -292,13 +295,12 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
             case R.id.ib_dish_amount_sub:{
                 int dishId = (Integer)v.getTag(R.id.tag_dish_id);
                 TextView tv_amount = (TextView)v.getTag(R.id.tag_list_tv_amount);
-                ImageButton ib_plus = (ImageButton) v.getTag(R.id.tag_list_ib_amount_plus);
                 Dish dish = findDishById(dishes,dishId);
                 if(dish instanceof DishSingle){
-                    Log.d(TAG, "itemClick: DishSingle");
+                    Log.d(TAG, "bannerItemOnClick: DishSingle");
                     removeFromCart(dish,tv_amount,(ImageButton)v);
                 }else if(dish instanceof DishPackage){
-                    Log.d(TAG, "itemClick: DishPackage");
+                    Log.d(TAG, "bannerItemOnClick: DishPackage");
                     removeFromCart(dish,tv_amount,(ImageButton)v);
                 }
                 break;
@@ -306,7 +308,25 @@ public class FragmentOne extends Fragment implements DishRightListViewAdapter.In
         }
     }
 
-    private void add2Cart(Dish dish,TextView textView,ImageButton imageButton){
+    @Override
+    public void bannerItemOnClick(int pos) {
+        Dish featureDish = featureDishes.get(pos);
+        for(int i=0;i<dishes.size();i++){
+            if(dishes.get(i).getId() == featureDish.getId()){
+                dishRightListView.setSelection(i);
+                dishRightListView.getChildAt(0).performClick();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        //Toast.makeText(getActivity(),"暂无详情",Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(R.id.cl_snackbar),"暂无详情",Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void add2Cart(Dish dish, TextView textView, ImageButton imageButton){
         int dishAmount = dish.getAmount();
         if(dishAmount == 0){
             textView.setVisibility(View.VISIBLE);

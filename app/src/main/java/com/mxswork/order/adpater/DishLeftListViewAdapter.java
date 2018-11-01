@@ -1,6 +1,7 @@
 package com.mxswork.order.adpater;
 
 import android.content.Context;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -29,6 +30,9 @@ public class DishLeftListViewAdapter extends BaseAdapter {
     }
 
     public void setSelectPosition(int selectPosition) {
+        if(this.selectPosition == selectPosition){
+            return;
+        }
         this.selectPosition = selectPosition;
         notifyDataSetChanged();
     }
@@ -60,10 +64,15 @@ public class DishLeftListViewAdapter extends BaseAdapter {
             tv_tag = (TextView) convertView.getTag();
         }
         tv_tag.setText(tagList.get(pos));
+        TextPaint tp = tv_tag.getPaint();
         if(selectPosition == pos){
+            tp.setFakeBoldText(true);
             tv_tag.setBackgroundColor(context.getResources().getColor(R.color.colorListWhiteBg));
+
         }else {
             tv_tag.setBackgroundColor(context.getResources().getColor(R.color.colorListGrayBg));
+            tp.setFakeBoldText(false);
+
         }
         return convertView;
     }

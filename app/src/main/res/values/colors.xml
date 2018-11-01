@@ -3,8 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorListGrayBg">#cccccc</color>
-    <color name="colorListWhiteBg">#ffffff</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="colorListGrayBg">#eeeeee</color>
+    <color name="colorListWhiteBg">#FFFFFF</color>
     <color name="colorButtonPurchaseActive">#3A4CFF</color>
     <color name="colorButtonPurchaseDisable">#CCCCCC</color>
     <color name="colorButtonPurchasePress">#3A0CF0</color>

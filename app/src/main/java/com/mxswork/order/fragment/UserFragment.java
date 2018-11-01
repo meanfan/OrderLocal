@@ -1,5 +1,6 @@
-package com.mxswork.order;
+package com.mxswork.order.fragment;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,13 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mxswork.order.R;
+import com.mxswork.order.pojo.User;
 
-public class FragmentThree extends Fragment {
+
+public class UserFragment extends Fragment {
+    private User user;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_three,container,false);
         return view;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 }
 

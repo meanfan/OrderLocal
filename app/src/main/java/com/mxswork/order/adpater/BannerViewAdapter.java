@@ -19,13 +19,14 @@ public class BannerViewAdapter extends BannerViewBaseAdapter {
 
     private List<Dish> dishList;
     private Context context;
+    BannerItemOnClickListener bannerItemOnClickListener;
 
     public BannerViewAdapter(List<Dish> dishes) {
         this.dishList = dishes;
     }
 
     @Override
-    public View getView(ViewGroup container, int position) {
+    public View getView(ViewGroup container, final int position) {
         AppCompatImageView imageView;
         TextView title;
 
@@ -47,7 +48,7 @@ public class BannerViewAdapter extends BannerViewBaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                bannerItemOnClickListener.bannerItemOnClick(position);
             }
         });
         return mView;
@@ -57,4 +58,13 @@ public class BannerViewAdapter extends BannerViewBaseAdapter {
     public int getSize() {
         return dishList.size();
     }
+
+    public interface BannerItemOnClickListener {
+        void bannerItemOnClick(int pos);
+    }
+
+    public void setBannerItemOnClickListener(BannerItemOnClickListener listener){
+        bannerItemOnClickListener = listener;
+    }
+
 }

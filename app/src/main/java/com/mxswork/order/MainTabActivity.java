@@ -1,6 +1,7 @@
 package com.mxswork.order;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,32 +13,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.mxswork.order.fragment.DishFragment;
+import com.mxswork.order.fragment.OrderFragment;
+import com.mxswork.order.fragment.UserFragment;
+import com.mxswork.order.pojo.Dish;
+import com.mxswork.order.pojo.User;
+import com.mxswork.order.utils.FileUtils;
+import com.mxswork.order.utils.LocalJsonHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class menu extends AppCompatActivity {
+public class MainTabActivity extends AppCompatActivity {
     public static String TAG ="Menu";
-
     private List<Fragment> fragments = new ArrayList<>();
-
-    private String[] titles = {"菜单", "订单", "我的"};
+    private String[] titles = {"菜单", "订单", "我"};
+    User user;
+    int desk;
+    private List<Dish> dishes;
+    private List<Dish> featureDishes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-
-        //Toolbar toolBar = findViewById(R.id.toolbar);
-        //toolBar.setTitle("订餐系统");
-        //setSupportActionBar(toolBar);      //替换toolbar的相关配置需要在这个方法前完成
-        //if(getSupportActionBar() != null){
-            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);  //显示返回键
-       // }
+        setContentView(R.layout.activity_maintab);
         TabLayout tabLayout = findViewById(R.id.tabs);
-//      tabLayout.addTab();//添加
         final ViewPager viewPager = findViewById(R.id.vp);
 
-        MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
+        MyAdapter adapter = new MyAdapter(getSupportFragmentManager(),this);
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
@@ -46,9 +49,12 @@ public class menu extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
                 //viewPager.setCurrentItem(pos);
-                ((FragmentTwo)fragments.get(1)).refresh();
+                if(pos ==1) {
+                    ((OrderFragment) fragments.get(1)).refresh();
+                }
                 Log.d(TAG, "onTabSelected: ");
             }
+
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -60,13 +66,37 @@ public class menu extends AppCompatActivity {
 
             }
         });
+        //FileUtils.copyAssetsFile2DiskFileDir(getContext(),LocalJsonHelper.FILENAME_DISH);
+        FileUtils.copyAssetsFile2DiskFileDir(this,LocalJsonHelper.FILENAME_ORDER);
+        FileUtils.copyAssetsFile2DiskFileDir(this,LocalJsonHelper.FILENAME_USER);
+        setUser();
+        loadDishes();
+    }
+    private void loadDishes(){
+        dishes = LocalJsonHelper.readDishes(this);
+        if(featureDishes == null){
+            featureDishes = new ArrayList<>();
+        }else {
+            featureDishes.clear();
+        }
+        for(Dish dish:dishes){
+            if(dish.isFeature()){
+                featureDishes.add(dish);
+            }
+        }
+    }
+
+    private void setUser(){
+        user = LocalJsonHelper.readUsers(this).get(0);
+        desk = 1;
     }
 
     //ViewPager的适配器
     private class MyAdapter extends FragmentPagerAdapter {
-
-        MyAdapter(FragmentManager fm) {
+        MainTabActivity activity;
+        MyAdapter(FragmentManager fm, MainTabActivity activity) {
             super(fm);
+            this.activity = activity;
         }
 
         @Override
@@ -74,13 +104,19 @@ public class menu extends AppCompatActivity {
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new FragmentOne();
+                    DishFragment dishFragment= new DishFragment();
+                    dishFragment.setUser(user);
+                    dishFragment.setDishes(dishes);
+                    dishFragment.setFeatureDishes(featureDishes);
+                    fragment = dishFragment;
                     break;
                 case 1:
-                    fragment = new FragmentTwo();
+                    fragment = new OrderFragment();
                     break;
                 case 2:
-                    fragment = new FragmentThree();
+                    UserFragment userFragment= new UserFragment();
+                    userFragment.setUser(user);
+                    fragment = userFragment;
                     break;
             }
             fragments.add(fragment);
@@ -92,7 +128,7 @@ public class menu extends AppCompatActivity {
             return titles.length;
         }
 
-        //ViewPager和Tablayout结合使用时候需要复写
+        //ViewPager和TabLayout结合使用时候需要复写
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];

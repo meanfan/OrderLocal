@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartCountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int recLen = 5;//跳过倒计时提示5秒
     private TextView tv;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 //从闪屏界面跳转到首界面
-                Intent intent = new Intent(MainActivity.this, menu.class);
+                Intent intent = new Intent(StartCountDownActivity.this, MainTabActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.tv:
                 //从闪屏界面跳转到首界面
-                Intent intent = new Intent(MainActivity.this, menu.class);
+                Intent intent = new Intent(StartCountDownActivity.this, MainTabActivity.class);
                 startActivity(intent);
                 finish();
                 if (runnable != null) {

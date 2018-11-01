@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+    <com.mxswork.order.view.CircleImageView
+        android:id="@+id/iv_user_avadar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/cool_guest"/>
+    <TextView
+        android:id="@+id/tv_user_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#00BBD3"
-        android:gravity="center">
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 </LinearLayout>
 

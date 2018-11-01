@@ -2,30 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.mxswork.order.view.BannerView
+    <!--<com.mxswork.order.view.BannerView-->
+        <!--android:id="@+id/banner_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<android.support.v4.view.ViewPager-->
+            <!--android:id="@+id/views_container"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="180dp"/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/indicator"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="visible">-->
+            <!--<LinearLayout-->
+                <!--android:id="@+id/point_container"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="11dp"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:orientation="horizontal" />-->
+        <!--</LinearLayout>-->
+    <!--</com.mxswork.order.view.BannerView>-->
+    <TextView
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/views_container"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"/>
-        <LinearLayout
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="5dp"
-            android:orientation="vertical"
-            android:visibility="visible">
-            <LinearLayout
-                android:id="@+id/point_container"
-                android:layout_width="match_parent"
-                android:layout_height="11dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal" />
-        </LinearLayout>
-    </com.mxswork.order.view.BannerView>
+        android:layout_height="200dp"
+        android:text="Banner"
+        android:gravity="center"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,13 +39,15 @@
         android:layout_above="@+id/rl_cart"
         android:orientation="horizontal">
         <ListView android:id="@+id/lv_dish_left"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="4"
             android:background="@color/colorListGrayBg"/>
         <com.mxswork.order.view.DishRightListView
             android:id="@+id/lv_dish_right"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/rl_cart"
@@ -80,5 +88,9 @@
             android:minHeight="0dp"
             android:background="@drawable/style_button_purchase"/>
     </RelativeLayout>
-
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/cl_snackbar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

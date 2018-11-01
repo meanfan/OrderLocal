@@ -1,8 +1,9 @@
 package com.mxswork.order.pojo;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Order {
+public class Order implements Serializable {
     private int id;
     private int uid;
     private OrderDishInfo[] dishes;

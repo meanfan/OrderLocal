@@ -1,6 +1,8 @@
 package com.mxswork.order.pojo;
 
-public class OrderDishInfo {
+import java.io.Serializable;
+
+public class OrderDishInfo implements Serializable {
         int id;
         int count;
         String flavour;

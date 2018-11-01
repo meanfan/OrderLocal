@@ -1,5 +1,7 @@
-package com.mxswork.order;
+package com.mxswork.order.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.mxswork.order.OrderActivity;
+import com.mxswork.order.R;
 import com.mxswork.order.adpater.OrderListViewAdapter;
 import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.User;
@@ -18,8 +22,9 @@ import com.mxswork.order.utils.LocalJsonHelper;
 import java.util.List;
 
 
-public class FragmentTwo extends Fragment {
-    public static final String TAG = "FragmentTwo";
+public class OrderFragment extends Fragment {
+    public static final String TAG = "OrderFragment";
+    private Activity parentActivity;
     private ListView ordersListView;
     private List<Order> orders;
     private User user;
@@ -37,6 +42,10 @@ public class FragmentTwo extends Fragment {
         initData();
         initView();
         //initListener();
+    }
+
+    public void setParentTabActivity(Activity activity){
+        parentActivity = activity;
     }
     
     private void initData(){
@@ -59,9 +68,15 @@ public class FragmentTwo extends Fragment {
         ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO 详情页面
+                showOrderActivity(orders.get(i));
             }
         });
+    }
+
+    private void showOrderActivity(Order order){
+        Intent intent = new Intent(getActivity(),OrderActivity.class);
+        intent.putExtra("order",order); //要确保Order及其嵌套类都实现序列化接口
+        startActivity(intent);
     }
 
     public void refresh(){
