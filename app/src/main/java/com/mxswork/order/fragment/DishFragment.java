@@ -86,6 +86,8 @@ public class DishFragment extends Fragment
     }
 
     private void initView(){
+
+        //TODO 添加Banner
 //        bannerView = getActivity().findViewById(R.id.banner_view);
 //        bannerViewAdapter = new BannerViewAdapter(featureDishes);
 //        bannerView.setAdapter(bannerViewAdapter);

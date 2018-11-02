@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -23,10 +22,10 @@ public class StartCountDownActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //定义全屏参数
-        int flag= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        //int flag= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         //设置当前窗体为全屏显示
-        getWindow().setFlags(flag, flag);
-        setContentView(R.layout.activity_welcome);
+        //getWindow().setFlags(flag, flag);
+        setContentView(R.layout.activity_count_down);
         initView();
         timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
         /**

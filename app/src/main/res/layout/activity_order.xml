@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/colorLittleGray"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_order"
@@ -10,11 +11,50 @@
         android:layout_height="wrap_content"
         app:title="订单详情"
         app:titleTextColor="@color/colorWhite"
-        android:background="@color/colorPrimary"
-        />
-    <TextView
-        android:id="@+id/tv_order_detail"
+        android:background="@color/colorPrimary" />
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="20dp"/>
+        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_list_load_anim"
+        android:scrollbars="none">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include android:id="@+id/in_desk" layout="@layout/item_order_info_left_right_text"/>
+                    <include android:id="@+id/in_id" layout="@layout/item_order_info_left_right_text"/>
+                    <include android:id="@+id/in_time" layout="@layout/item_order_info_left_right_text"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="4dp">
+                <LinearLayout
+                    android:id="@+id/ll_order_list_dish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="订单内容"
+                        android:textStyle="bold"/>
+                    <!--<include layout="@layout/item_order_info_dish"/>-->
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

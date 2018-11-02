@@ -81,7 +81,7 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
         vh.iv_dish_pic.setImageBitmap(LocalJsonHelper.readDishPic(context,dish));
         vh.tv_dish_title.setText(dish.getName());
         vh.tv_dish_desc.setText(dish.getDesc());
-        vh.tv_dish_price.setText(String.format("%.2f",dish.getPrice()));
+        vh.tv_dish_price.setText(String.format("%.1f",dish.getPrice()));
         int amount = dish.getAmount();
         if(amount == 0){
             vh.ib_dish_amount_sub.setVisibility(View.INVISIBLE);
