@@ -12,6 +12,7 @@
         {"id":2,"amount":1},
         {"id":3,"amount":2}
       ],
+      "flavour":["不辣","辣"],
       "desc":"藤椒汉堡x1+可乐x1+藤椒鸡腿卷x2",
       "price":40.0,
       "picPath":"dish_pic_4.jpg"
@@ -85,6 +86,16 @@
       "isFeature":false,
       "flavour":[],
       "desc":"可百事乐300ml x1",
+      "price":3.0,
+      "picPath":"dish_pic_2.jpg"
+    },
+    {
+      "id":35,
+      "name":"雪碧(小杯)",
+      "tag":"饮料",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"雪碧300ml x1",
       "price":3.0,
       "picPath":"dish_pic_2.jpg"
     }

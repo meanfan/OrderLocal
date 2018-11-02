@@ -17,6 +17,7 @@ import com.mxswork.order.fragment.DishFragment;
 import com.mxswork.order.fragment.OrderFragment;
 import com.mxswork.order.fragment.UserFragment;
 import com.mxswork.order.pojo.Dish;
+import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.FileUtils;
 import com.mxswork.order.utils.LocalJsonHelper;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainTabActivity extends AppCompatActivity {
-    public static String TAG ="Menu";
+    public static String TAG ="MainTabActivity";
     private List<Fragment> fragments = new ArrayList<>();
     private String[] titles = {"菜单", "订单", "我"};
     User user;
@@ -49,10 +50,10 @@ public class MainTabActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
                 //viewPager.setCurrentItem(pos);
-                if(pos ==1) {
+                if(pos == 1) {
                     ((OrderFragment) fragments.get(1)).refresh();
                 }
-                Log.d(TAG, "onTabSelected: ");
+                Log.d(TAG, "onTabSelected: "+pos);
             }
 
 
@@ -111,7 +112,9 @@ public class MainTabActivity extends AppCompatActivity {
                     fragment = dishFragment;
                     break;
                 case 1:
-                    fragment = new OrderFragment();
+                    OrderFragment orderFragment = new OrderFragment();
+                    orderFragment.setUser(user);
+                    fragment = orderFragment;
                     break;
                 case 2:
                     UserFragment userFragment= new UserFragment();

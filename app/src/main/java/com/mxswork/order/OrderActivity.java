@@ -2,13 +2,14 @@ package com.mxswork.order;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mxswork.order.pojo.Order;
 
 public class OrderActivity extends AppCompatActivity {
-
+    private static final String TAG = "OrderActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
         Order order = (Order)getIntent().getSerializableExtra("order");
+        Log.d(TAG, "onCreate: "+order.toString());
         ((TextView)findViewById(R.id.tv_order_detail)).setText(order.toString());
     }
 }

@@ -28,8 +28,6 @@ import com.mxswork.order.adpater.BannerViewAdapter;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
 import com.mxswork.order.pojo.Dish;
-import com.mxswork.order.pojo.DishPackage;
-import com.mxswork.order.pojo.DishSingle;
 import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.pojo.User;
@@ -38,6 +36,8 @@ import com.mxswork.order.view.BannerView;
 import com.mxswork.order.view.DishRightListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -59,9 +59,9 @@ public class DishFragment extends Fragment
     private int position;
     private List<Dish> dishes;
     private List<Dish> featureDishes;
+    private List<OrderDishInfo> cartDishInfos;
     private List<String> tags;
     private List<Integer> firstTagInDishes;
-    private int selected_dish_count;
     private float selected_dish_price;
     private User user;
     private int desk;
@@ -69,7 +69,7 @@ public class DishFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_one,container,false);
+        View view = inflater.inflate(R.layout.fragment_dish,container,false);
         return view;
     }
 
@@ -78,9 +78,9 @@ public class DishFragment extends Fragment
         super.onStart();
         initView();
         initListener();
-        selected_dish_count = 0;
         selected_dish_price = 0;
         desk = 1;
+        cartDishInfos = new ArrayList<>();
     }
 
     private void initView(){
@@ -160,7 +160,7 @@ public class DishFragment extends Fragment
                         showOrderActivity(order);
                     }
                 }).show();
-                //cleanDishSelected();
+                cleanDishSelected();
             }
         });
     }
@@ -172,37 +172,79 @@ public class DishFragment extends Fragment
     }
 
     private void cleanDishSelected(){
-        selected_dish_count = 0;
         selected_dish_price = 0;
+        cartDishInfos = new ArrayList<>();
         for(Dish dish:dishes){
-            dish.setSelectedFlavour("");
             dish.setAmount(0);
         }
 
+        //界面更新
+        rightAdapter.updateDishesList(dishes);
+        rightAdapter.notifyDataSetChanged();
+        updateCartLayout(0,0);
 
+
+    }
+
+    private OrderDishInfo genarateOrderDishInfo(int id, int amount, String flavour){
+        OrderDishInfo orderDishInfo = new OrderDishInfo();
+        orderDishInfo.setCount(amount);
+        orderDishInfo.setId(id);
+        orderDishInfo.setFlavour(flavour);
+        return orderDishInfo;
     }
 
     private Order generateOrder(){
         Order order = new Order();
         order.setUid(user.getUid());
-        List<OrderDishInfo> infos = new ArrayList<>();
-        for(Dish dish:dishes){
-            if(dish.getAmount()>0){
-                OrderDishInfo orderDishInfo = new OrderDishInfo();
-                orderDishInfo.setCount(dish.getAmount());
-                orderDishInfo.setId(dish.getId());
-                orderDishInfo.setFlavour(dish.getSelectedFlavour());
-                infos.add(orderDishInfo);
-            }
-        }
-        OrderDishInfo[] infos1 = new OrderDishInfo[infos.size()];
-        infos.toArray(infos1);
-        order.setDishes(infos1);
+        List<OrderDishInfo> mergedInfos = mergeOrderDishInfo(cartDishInfos);
+        OrderDishInfo[] infos = new OrderDishInfo[mergedInfos.size()];
+        mergedInfos.toArray(infos);
+        order.setDishes(infos);
         order.setDesk(desk);
         Date time = new Date();
         order.setTime(time.getTime());
         order.setTotal_price(selected_dish_price);
         return order;
+    }
+
+    private List<OrderDishInfo> mergeOrderDishInfo(List<OrderDishInfo> infos){
+        List<OrderDishInfo> sortedInfos = sortOrdersDishInfo(infos);
+        List<OrderDishInfo> mergedInfos = new ArrayList<>();
+        for(OrderDishInfo info:sortedInfos){
+            if(mergedInfos.size() == 0){
+                mergedInfos.add(info);
+            }else {
+                OrderDishInfo lastMergedInfo = mergedInfos.get(mergedInfos.size()-1);
+                if(lastMergedInfo.getId()==info.getId() && TextUtils.equals(lastMergedInfo.getFlavour(),info.getFlavour())){
+                    lastMergedInfo.setCount(lastMergedInfo.getCount()+1);
+                }else {
+                    mergedInfos.add(info);
+                }
+            }
+        }
+        return mergedInfos;
+    }
+
+    private List<OrderDishInfo> sortOrdersDishInfo(List<OrderDishInfo> infos){
+        Collections.sort(infos, new Comparator<OrderDishInfo>() {
+            @Override
+            public int compare(OrderDishInfo info, OrderDishInfo i1) {
+                if(info.getId() < i1.getId()){
+                    return 1;
+                }else if(info.getId() > i1.getId()){
+                    return -1;
+                }else {
+                    if(TextUtils.equals(info.getFlavour(),i1.getFlavour())){
+                        return 0;
+                    }else{
+                        //TODO 测试是否保持了顺序
+                        return -1;
+                    }
+                }
+            }
+        });
+        return infos;
     }
 
     private List<String> getTags(){
@@ -259,36 +301,31 @@ public class DishFragment extends Fragment
                 TextView tv_amount = (TextView)v.getTag(R.id.tag_list_tv_amount);
                 ImageButton ib_sub = (ImageButton) v.getTag(R.id.tag_list_ib_amount_sub);
                 Dish dish = findDishById(dishes,dishId);
-                if(dish instanceof DishSingle){
-                    //Log.d(TAG, "bannerItemOnClick: DishSingle");
-                    List<String> flavours = ((DishSingle)dish).getFlavour();
-                    if(flavours.size()>0){
-                        if(((DishSingle) dish).getFlavour()== null || ((DishSingle) dish).getFlavour().size()==0){ //每种菜第一次加才让用户选择口味
-                            String[] flavoursArr = new String[flavours.size()];
-                            for(int i=0;i<flavours.size();i++){
-                                flavoursArr[i] = flavours.get(i);
-                            }
-                            AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
-                            build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int which) {
-
-                                }
-                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            }).create().show();
-                            //TODO 数据回传未实现, 先默认选第一个
-                            dish.setSelectedFlavour(((DishSingle) dish).getFlavour().get(0));
-                        }
+                OrderDishInfo orderDishInfo;
+                List<String> flavours = dish.getFlavour();
+                String selectedFlavour = null;
+                if(flavours != null && flavours.size()>0) {
+                    String[] flavoursArr = new String[flavours.size()];
+                    for (int i = 0; i < flavours.size(); i++) {
+                        flavoursArr[i] = flavours.get(i);
                     }
-                    add2Cart(dish,tv_amount,ib_sub);
-                }else if(dish instanceof DishPackage){
-                    //Log.d(TAG, "bannerItemOnClick: DishPackage");
-                    add2Cart(dish,tv_amount,ib_sub);
+                    AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
+                    build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).create().show();
+                    //TODO 数据回传未实现, 先默认选第一个
+                    selectedFlavour = flavours.get(0);
                 }
+                orderDishInfo = genarateOrderDishInfo(dish.getId(),1,selectedFlavour);
+                add2Cart(orderDishInfo,dish,tv_amount,ib_sub);
                 break;
             }
 
@@ -296,13 +333,7 @@ public class DishFragment extends Fragment
                 int dishId = (Integer)v.getTag(R.id.tag_dish_id);
                 TextView tv_amount = (TextView)v.getTag(R.id.tag_list_tv_amount);
                 Dish dish = findDishById(dishes,dishId);
-                if(dish instanceof DishSingle){
-                    Log.d(TAG, "bannerItemOnClick: DishSingle");
-                    removeFromCart(dish,tv_amount,(ImageButton)v);
-                }else if(dish instanceof DishPackage){
-                    Log.d(TAG, "bannerItemOnClick: DishPackage");
-                    removeFromCart(dish,tv_amount,(ImageButton)v);
-                }
+                removeFromCart(dish,tv_amount,(ImageButton)v);
                 break;
             }
         }
@@ -326,21 +357,31 @@ public class DishFragment extends Fragment
         Snackbar.make(getActivity().findViewById(R.id.cl_snackbar),"暂无详情",Snackbar.LENGTH_SHORT).show();
     }
 
-    private void add2Cart(Dish dish, TextView textView, ImageButton imageButton){
+    private void add2Cart(OrderDishInfo orderDishInfo, Dish dish, TextView tv_num, ImageButton ib_sub){
+        cartDishInfos.add(orderDishInfo);
+        //界面更新
         int dishAmount = dish.getAmount();
         if(dishAmount == 0){
-            textView.setVisibility(View.VISIBLE);
-            imageButton.setVisibility(View.VISIBLE);
+            tv_num.setVisibility(View.VISIBLE);
+            ib_sub.setVisibility(View.VISIBLE);
         }
         dishAmount++;
-        textView.setText(String.valueOf(dishAmount));
-        selected_dish_count++;
-        selected_dish_price+=dish.getPrice();
         dish.setAmount(dishAmount);
-        updateCartLayout();
+        tv_num.setText(String.valueOf(dishAmount));
+        selected_dish_price+=dish.getPrice();
+        updateCartLayout(dishAmount,selected_dish_price);
     }
 
     private void removeFromCart(Dish dish,TextView textView,ImageButton imageButton){
+        //去除最近一次同种商品的加入(倒序查找）
+        for(int i = cartDishInfos.size()-1;i>=0;i--){
+            if(cartDishInfos.get(i).getId() == dish.getId()){
+                cartDishInfos.remove(i);
+                break;
+            }
+        }
+
+        //界面更新
         int dishAmount = dish.getAmount();
         dishAmount--;
         if(dishAmount == 0){
@@ -350,25 +391,24 @@ public class DishFragment extends Fragment
         }
         dish.setAmount(dishAmount);
         textView.setText(String.valueOf(dishAmount));
-        selected_dish_count--;
         selected_dish_price-=dish.getPrice();
-        updateCartLayout();
+        updateCartLayout(dishAmount,selected_dish_price);
     }
 
-    private void updateCartLayout(){
+    private void updateCartLayout(int num, float price){
         String info;
-        String price;
-        if(selected_dish_count == 0){
+        String priceString;
+        if(num == 0){
             info = "未选择商品";
-            price = " 0 元";
+            priceString = " 0 元";
             btn_purchase.setEnabled(false);
         }else {
-            info = String.format("已选择 %d 件商品",selected_dish_count);
-            price = String.format(" %.2f 元",selected_dish_price);
+            info = String.format("已选择 %d 件商品",num);
+            priceString = String.format(" %.2f 元",price);
             btn_purchase.setEnabled(true);
         }
         tv_cart_info.setText(info);
-        tv_cart_price.setText(price);
+        tv_cart_price.setText(priceString);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mxswork.order.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.mxswork.order.OrderActivity;
 import com.mxswork.order.R;
@@ -19,12 +19,13 @@ import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.LocalJsonHelper;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
 public class OrderFragment extends Fragment {
     public static final String TAG = "OrderFragment";
-    private Activity parentActivity;
     private ListView ordersListView;
     private List<Order> orders;
     private User user;
@@ -32,36 +33,54 @@ public class OrderFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_two,container,false);
+        View view=inflater.inflate(R.layout.fragment_order,container,false);
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        initData();
-        initView();
+        ordersListView = getActivity().findViewById(R.id.lv_orders);
+        ordersListView.setVerticalFadingEdgeEnabled(true);
+        ordersListView.setFadingEdgeLength(50);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                initListView();
+            }
+        });
         //initListener();
     }
 
-    public void setParentTabActivity(Activity activity){
-        parentActivity = activity;
-    }
-    
     private void initData(){
         //默认先设置预置的游客账号
-        setUser(LocalJsonHelper.readUsers(getActivity()).get(0));
         orders = LocalJsonHelper.readOrders(getContext());
         for(Order order:orders){
             if(order.getUid() != user.getUid()){
                 orders.remove(order);
             }
         }
-        Log.d(TAG, "initData: orders: "+orders.toString());
+        sortOrdersByTime();
+        Log.d(TAG, "initData: orders: ");
     }
 
-    private void initView(){
-        ordersListView = getActivity().findViewById(R.id.lv_orders);
+    private void sortOrdersByTime(){
+        Collections.sort(orders, new Comparator<Order>() {
+            @Override
+            public int compare(Order order, Order t1) {
+                if(order.getTime() < t1.getTime()){
+                    return 1;
+                }else if(order.getTime() > t1.getTime()){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            }
+        });
+    }
+
+    private void initListView(){
         adapter = new OrderListViewAdapter(getActivity());
         adapter.updateOrders(orders);
         ordersListView.setAdapter(adapter);
@@ -76,19 +95,27 @@ public class OrderFragment extends Fragment {
     private void showOrderActivity(Order order){
         Intent intent = new Intent(getActivity(),OrderActivity.class);
         intent.putExtra("order",order); //要确保Order及其嵌套类都实现序列化接口
+        Log.d(TAG, "showOrderActivity: "+order.toString());
         startActivity(intent);
     }
 
     public void refresh(){
-        initData();
-        adapter.updateOrders(orders);
-
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                adapter.updateOrders(orders);
+            }
+        });
+        ordersListView.startLayoutAnimation();
     }
 
     public void setUser(User user){
         this.user = user;
     }
 
-
+    public void setOrders(List<Order> orders){
+        this.orders = orders;
+    }
 }
 

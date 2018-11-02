@@ -134,6 +134,7 @@ public class DishRightListViewAdapter extends BaseAdapter implements View.OnClic
     public interface DishItemOnClickListener {
         void dishItemOnClick(View v);
     }
+
     public void setOnInnerItemOnClickListener(DishItemOnClickListener listener){
         dishItemOnClickListener = listener;
     }

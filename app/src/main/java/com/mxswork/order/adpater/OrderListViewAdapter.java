@@ -30,6 +30,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         if(orders == null){
             this.orders = new ArrayList<>();
         }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -62,7 +63,6 @@ public class OrderListViewAdapter extends BaseAdapter {
             vh = (ViewHolder) view.getTag();
         }
         Order order = orders.get(pos);
-        String firstDishPicPath;
         String firstDishName;
         int firstOrderDishId = order.getDishes()[0].getId();
         Dish firstDish = LocalJsonHelper.readDishById(context,firstOrderDishId);
@@ -70,7 +70,7 @@ public class OrderListViewAdapter extends BaseAdapter {
             firstDishName = firstDish.getName();
             vh.iv_order_list_pic.setImageBitmap(LocalJsonHelper.readDishPic(context,firstDish));
             String title;
-            if(order.getDishes().length == 0){
+            if(order.getDishes().length == 1){
                 title = String.format("%s",firstDishName);
             }else {
                 title = String.format("%s 等 %d 件商品",firstDishName,order.getDishes().length);

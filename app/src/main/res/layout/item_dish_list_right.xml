@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     android:descendantFocusability="blocksDescendants">
     <TextView
         android:id="@+id/tv_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="7dp"
         android:layout_marginBottom="3dp"
         android:visibility="invisible"
         android:textSize="16sp"

@@ -1,15 +1,27 @@
 package com.mxswork.order.pojo;
 
+import java.util.List;
+
 public class Dish {
     protected int id;
     protected String name;
     protected String tag;
     protected boolean isFeature;
+    private List<String> flavour;
     protected String desc;
     protected float price;
     protected String picPath;
     protected int amount;
     protected String selectedFlavour;
+
+
+    public List<String> getFlavour() {
+        return flavour;
+    }
+
+    public void setFlavour(List<String> flavour) {
+        this.flavour = flavour;
+    }
 
     public int getId() {
         return id;
