@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/colorListGrayBg"/>
+            android:background="@color/colorLittleGray"/>
         <com.mxswork.order.view.DishRightListView
             android:id="@+id/lv_dish_right"
             android:layout_width="match_parent"

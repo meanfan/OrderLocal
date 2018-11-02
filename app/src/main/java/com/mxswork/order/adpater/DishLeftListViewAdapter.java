@@ -70,7 +70,7 @@ public class DishLeftListViewAdapter extends BaseAdapter {
             tv_tag.setBackgroundColor(context.getResources().getColor(R.color.colorListWhiteBg));
 
         }else {
-            tv_tag.setBackgroundColor(context.getResources().getColor(R.color.colorListGrayBg));
+            tv_tag.setBackgroundColor(context.getResources().getColor(R.color.colorLittleGray));
             tp.setFakeBoldText(false);
 
         }

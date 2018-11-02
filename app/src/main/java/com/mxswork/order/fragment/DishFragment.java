@@ -1,8 +1,6 @@
 package com.mxswork.order.fragment;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,18 +32,21 @@ import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.LocalJsonHelper;
 import com.mxswork.order.view.BannerView;
 import com.mxswork.order.view.DishRightListView;
+import com.mxswork.order.view.SelectFlavourPopupWindow;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class DishFragment extends Fragment
         implements AdapterView.OnItemClickListener,
         DishRightListViewAdapter.DishItemOnClickListener,
-        BannerViewAdapter.BannerItemOnClickListener {
+        BannerViewAdapter.BannerItemOnClickListener,
+        SelectFlavourPopupWindow.ConfrimButtonOnClickListener{
     public static final String TAG = "DishFragment";
     private BannerView bannerView;
     private BannerViewAdapter bannerViewAdapter;
@@ -62,6 +63,7 @@ public class DishFragment extends Fragment
     private List<OrderDishInfo> cartDishInfos;
     private List<String> tags;
     private List<Integer> firstTagInDishes;
+    private HashMap<String,Object> savedVariables;
     private float selected_dish_price;
     private User user;
     private int desk;
@@ -186,7 +188,7 @@ public class DishFragment extends Fragment
 
     }
 
-    private OrderDishInfo genarateOrderDishInfo(int id, int amount, String flavour){
+    private OrderDishInfo generateOrderDishInfo(int id, int amount, String flavour){
         OrderDishInfo orderDishInfo = new OrderDishInfo();
         orderDishInfo.setCount(amount);
         orderDishInfo.setId(id);
@@ -303,29 +305,19 @@ public class DishFragment extends Fragment
                 Dish dish = findDishById(dishes,dishId);
                 OrderDishInfo orderDishInfo;
                 List<String> flavours = dish.getFlavour();
-                String selectedFlavour = null;
                 if(flavours != null && flavours.size()>0) {
-                    String[] flavoursArr = new String[flavours.size()];
-                    for (int i = 0; i < flavours.size(); i++) {
-                        flavoursArr[i] = flavours.get(i);
-                    }
-                    AlertDialog.Builder build = new AlertDialog.Builder(getActivity());
-                    build.setTitle(dish.getName()).setSingleChoiceItems(flavoursArr, 0, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-
-                        }
-                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    }).create().show();
-                    //TODO 数据回传未实现, 先默认选第一个
-                    selectedFlavour = flavours.get(0);
+                    SelectFlavourPopupWindow popupWindow = new SelectFlavourPopupWindow(getActivity(),flavours);
+                    popupWindow.setConfrmButtonOnClickListener(this);
+                    popupWindow.popup();
+                    //暂存当前变量
+                    savedVariables = new HashMap<>();
+                    savedVariables.put("dish",dish);
+                    savedVariables.put("tv_amount",tv_amount);
+                    savedVariables.put("ib_sub",ib_sub);
+                }else {
+                    orderDishInfo = generateOrderDishInfo(dish.getId(),1,"");
+                    add2Cart(orderDishInfo,dish,tv_amount,ib_sub);
                 }
-                orderDishInfo = genarateOrderDishInfo(dish.getId(),1,selectedFlavour);
-                add2Cart(orderDishInfo,dish,tv_amount,ib_sub);
                 break;
             }
 
@@ -355,6 +347,20 @@ public class DishFragment extends Fragment
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //Toast.makeText(getActivity(),"暂无详情",Toast.LENGTH_SHORT).show();
         Snackbar.make(getActivity().findViewById(R.id.cl_snackbar),"暂无详情",Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setSelectedFlavourPos(int pos) {
+        if(pos<0){
+            showSnackBarMsg("你没有选择口味哦");
+        }else {
+            Dish dish = (Dish)savedVariables.get("dish");
+            TextView tv_amount = (TextView)savedVariables.get("tv_amount");
+            ImageButton ib_sub = (ImageButton)savedVariables.get("ib_sub");
+            OrderDishInfo orderDishInfo = generateOrderDishInfo(dish.getId(),1,dish.getFlavour().get(pos));
+            add2Cart(orderDishInfo,dish,tv_amount,ib_sub);
+        }
+        savedVariables.clear();
     }
 
     private void add2Cart(OrderDishInfo orderDishInfo, Dish dish, TextView tv_num, ImageButton ib_sub){
@@ -409,6 +415,10 @@ public class DishFragment extends Fragment
         }
         tv_cart_info.setText(info);
         tv_cart_price.setText(priceString);
+    }
+
+    private void showSnackBarMsg(String msg){
+        Snackbar.make(getActivity().findViewById(R.id.cl_snackbar),msg,Snackbar.LENGTH_SHORT).show();
     }
 
 }

@@ -6,7 +6,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorRed">#ff0000</color>
-    <color name="colorListGrayBg">#eeeeee</color>
+    <color name="colorLittleRed">#FF5E82</color>
+    <color name="colorLittleGray">#eeeeee</color>
     <color name="colorListWhiteBg">#FFFFFF</color>
     <color name="colorButtonPurchaseActive">#3A4CFF</color>
     <color name="colorButtonPurchaseDisable">#CCCCCC</color>
