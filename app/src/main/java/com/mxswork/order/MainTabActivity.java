@@ -21,6 +21,7 @@ import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.FileUtils;
 import com.mxswork.order.utils.LocalJsonHelper;
+import com.mxswork.order.view.MainTabViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,7 @@ public class MainTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintab);
         TabLayout tabLayout = findViewById(R.id.tabs);
-        final ViewPager viewPager = findViewById(R.id.vp);
-
+        MainTabViewPager viewPager = findViewById(R.id.vp);
         MyAdapter adapter = new MyAdapter(getSupportFragmentManager(),this);
         viewPager.setAdapter(adapter);
 

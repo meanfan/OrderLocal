@@ -38,11 +38,9 @@
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:autoStart="true"
-        android:flipInterval="3000"
-        android:inAnimation="@anim/banner_in"
-        android:outAnimation="@anim/banner_out"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:flipInterval="5000"
+        android:inAnimation="@anim/banner_right_in"
+        android:outAnimation="@anim/banner_left_out"
         />
     <LinearLayout
         android:layout_width="match_parent"

@@ -34,7 +34,6 @@ import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.pojo.User;
 import com.mxswork.order.utils.LocalJsonHelper;
-import com.mxswork.order.view.BannerView;
 import com.mxswork.order.view.DishRightListView;
 import com.mxswork.order.view.SelectFlavourPopupWindow;
 
@@ -142,13 +141,13 @@ public class DishFragment extends Fragment
                         //获取终点X坐标
                         endX = motionEvent.getX();
                         if (endX - startX > moveX) {
-                            vf_banner.setInAnimation(getActivity(), R.anim.banner_in);
-                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_out);
+                            vf_banner.setInAnimation(getActivity(), R.anim.banner_left_in);
+                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_right_out);
                             vf_banner.showPrevious();
                             Log.d(TAG, "onTouch: left");
                         } else if (startX - endX > moveX) {
-                            vf_banner.setInAnimation(getActivity(), R.anim.banner_in);
-                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_out);
+                            vf_banner.setInAnimation(getActivity(), R.anim.banner_right_in);
+                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_left_out);
                             vf_banner.showNext();
                             Log.d(TAG, "onTouch: right");
                         }else {
