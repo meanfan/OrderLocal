@@ -26,7 +26,6 @@ import android.widget.ViewFlipper;
 
 import com.mxswork.order.OrderActivity;
 import com.mxswork.order.R;
-import com.mxswork.order.adpater.BannerViewAdapter;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
 import com.mxswork.order.pojo.Dish;
@@ -48,8 +47,7 @@ import java.util.List;
 public class DishFragment extends Fragment
         implements AdapterView.OnItemClickListener,
         DishRightListViewAdapter.DishItemOnClickListener,
-        BannerViewAdapter.BannerItemOnClickListener,
-        SelectFlavourPopupWindow.ConfrimButtonOnClickListener{
+        SelectFlavourPopupWindow.ConfirmButtonOnClickListener {
     public static final String TAG = "DishFragment";
     private ViewFlipper vf_banner;
     private ListView dishLeftListView;
@@ -88,12 +86,6 @@ public class DishFragment extends Fragment
     }
 
     private void initView(){
-
-        //TODO 添加Banner
-//        bannerView = getActivity().findViewById(R.id.banner_view);
-//        bannerViewAdapter = new BannerViewAdapter(featureDishes);
-//        bannerView.setAdapter(bannerViewAdapter);
-//        bannerViewAdapter.setBannerItemOnClickListener(this);
 
         vf_banner = getActivity().findViewById(R.id.vf_banner);
         for(Dish dish:featureDishes){
@@ -384,18 +376,6 @@ public class DishFragment extends Fragment
                 TextView tv_amount = (TextView)v.getTag(R.id.tag_list_tv_amount);
                 Dish dish = findDishById(dishes,dishId);
                 removeFromCart(dish,tv_amount,(ImageButton)v);
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void bannerItemOnClick(int pos) {
-        Dish featureDish = featureDishes.get(pos);
-        for(int i=0;i<dishes.size();i++){
-            if(dishes.get(i).getId() == featureDish.getId()){
-                dishRightListView.setSelection(i);
-                dishRightListView.getChildAt(0).performClick();
                 break;
             }
         }

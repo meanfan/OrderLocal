@@ -2,36 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<com.mxswork.order.view.BannerView-->
-        <!--android:id="@+id/banner_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/views_container"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="180dp"/>-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/indicator"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:layout_marginBottom="5dp"-->
-            <!--android:orientation="vertical"-->
-            <!--android:visibility="visible">-->
-            <!--<LinearLayout-->
-                <!--android:id="@+id/point_container"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="11dp"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:orientation="horizontal" />-->
-        <!--</LinearLayout>-->
-    <!--</com.mxswork.order.view.BannerView>-->
-    <!--<TextView-->
-        <!--android:id="@+id/banner_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:text="Banner"-->
-        <!--android:gravity="center"/>-->
     <ViewFlipper
         android:id="@+id/vf_banner"
         android:layout_width="match_parent"

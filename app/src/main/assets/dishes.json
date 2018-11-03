@@ -1,6 +1,5 @@
 {
   "name":"dishes",
-  "count":4,
   "dishPackage":[
     {
       "id":4,
@@ -8,9 +7,9 @@
       "tag":"套餐",
       "isFeature":true,
       "dishes":[
-        {"id":1,"amount":1},
-        {"id":2,"amount":1},
-        {"id":3,"amount":2}
+        {"id":11,"amount":1},
+        {"id":22,"amount":1},
+        {"id":32,"amount":2}
       ],
       "flavour":["不辣","辣"],
       "desc":"藤椒汉堡x1+可乐x1+藤椒鸡腿卷x2",

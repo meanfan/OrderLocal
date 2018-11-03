@@ -2,34 +2,47 @@
 <RelativeLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:padding="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:orientation="vertical">
-        <LinearLayout
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_order_list_pic"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/iv_order_list_pic"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+            android:layout_marginLeft="4dp">
             <TextView
                 android:id="@+id/tv_order_list_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tv_order_list_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:padding="2dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorBlack"/>
+            <TextView
+                android:id="@+id/tv_order_list_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/tv_order_list_title"
+                android:padding="2dp"/>
+        </RelativeLayout>
+
     </LinearLayout>
     <TextView
         android:id="@+id/tv_order_list_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="4sp"
+        android:textSize="18sp"
+        android:textColor="@color/colorRed"/>
 
 </RelativeLayout>

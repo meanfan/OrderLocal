@@ -2,6 +2,8 @@ package com.mxswork.order;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.utils.LocalJsonHelper;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +89,7 @@ public class OrderActivity extends AppCompatActivity {
             String countString = String.format("x%d",count);
             String priceString = String.format("￥%.1f",price);
 
-            View itemView  = LayoutInflater.from(this).inflate(R.layout.item_order_info_dish,null);
+            LinearLayout itemView  = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.item_order_info_dish,null);
 
             ImageView iv_pic = itemView.findViewById(R.id.iv_order_list_pic);
             iv_pic.setImageBitmap(LocalJsonHelper.readDishPic(this,dish));
@@ -102,7 +105,50 @@ public class OrderActivity extends AppCompatActivity {
             tv_order_dish_price.setText(priceString);
 
             if(dish instanceof DishPackage){
-                //TODO 针对套餐显示套餐内容
+                DishPackage dishPackage = (DishPackage) dish;
+                DishPackage.DishInfo[] dishInfos = dishPackage.getDishes();
+                LinearLayout packageDishView = itemView.findViewById(R.id.ll_order_list_item_package_dish);
+                for(int j=0;j<dishInfos.length;j++){
+                    Log.d(TAG, "initOrderView: singleDish"+dishInfos[j].getId());
+                    Dish singleDish = LocalJsonHelper.readDishById(this,dishInfos[j].getId());
+                    String singleDishName = singleDish.getName();
+                    int singleDishCount = dishInfos[j].getAmount();
+                    float singleDishPrice = singleDish.getPrice()*singleDishCount;
+                    String singleDishCountString = String.format("x%d",singleDishCount);
+                    String singleDishPriceString = String.format("￥%.1f",singleDishPrice);
+
+                    View view = LayoutInflater.from(this).inflate(R.layout.item_order_info_dish,null);
+                    ((TextView)view.findViewById(R.id.tv_order_list_name)).setText(singleDishName);
+                    ((TextView)view.findViewById(R.id.tv_order_dish_count)).setText(singleDishCountString);
+                    ((TextView)view.findViewById(R.id.tv_order_dish_price)).setText(singleDishPriceString);
+                    packageDishView.addView(view);
+                }
+                packageDishView.setVisibility(View.GONE);
+                TextView tv_expand_hide = (TextView)LayoutInflater.from(this).inflate(R.layout.item_show_hide_textview,null);
+                tv_expand_hide.setVisibility(View.VISIBLE);
+                tv_expand_hide.setText("﹀");
+                tv_expand_hide.setTag("state_hide");
+                tv_expand_hide.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        View parentView = (View) view.getParent();
+                        View packageDishView = parentView.findViewById(R.id.ll_order_list_item_package_dish);
+                        if(TextUtils.equals((String)view.getTag(),"state_hide")){
+                            packageDishView.setVisibility(View.VISIBLE);
+                            ((TextView)view).setText("︿");
+                            view.setTag("state_expand");
+                            Log.d(TAG, "onClick: showed");
+                        }else {
+
+                            packageDishView.setVisibility(View.GONE);
+                            ((TextView)view).setText("﹀");
+                            view.setTag("state_hide");
+                            Log.d(TAG, "onClick: hided");
+
+                        }
+                    }
+                });
+                itemView.addView(tv_expand_hide);
             }
             ll_order_list_dish.addView(itemView);
         }

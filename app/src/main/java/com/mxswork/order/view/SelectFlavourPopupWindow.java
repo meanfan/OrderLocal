@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -17,14 +18,15 @@ import com.mxswork.order.R;
 
 import java.util.List;
 
-public class SelectFlavourPopupWindow extends PopupWindow {
+public class SelectFlavourPopupWindow extends PopupWindow implements PopupWindow.OnDismissListener {
     private PopupWindow popupWindow;
     private boolean mIsShowing = false;
     Context context;
     private RadioGroup rg_flavour;
     private Button btn_flavour_confirm;
+    private ImageButton ib_flavour_close;
     private List<String> flavours;
-    ConfrimButtonOnClickListener listener;
+    ConfirmButtonOnClickListener listener;
 
     public SelectFlavourPopupWindow(Context context, List<String> flavours) {
         this.context = context;
@@ -36,10 +38,13 @@ public class SelectFlavourPopupWindow extends PopupWindow {
         View view = View.inflate(context, R.layout.view_select_dish_flavour, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(false);
+        //popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.colorWhite)));
         setBackgroundAlpha(0.7f);
         popupWindow.setAnimationStyle(R.style.anim_bottom_popup_window);
+        popupWindow.setOnDismissListener(this);
         rg_flavour = view.findViewById(R.id.rg_flavour);
         for(int i =0;i<flavours.size();i++){
             RadioButton radioButton = (RadioButton) LayoutInflater.from(context).inflate(R.layout.item_tag_dish_flavour,null);
@@ -50,6 +55,15 @@ public class SelectFlavourPopupWindow extends PopupWindow {
             }
             rg_flavour.addView(radioButton);
         }
+
+        ib_flavour_close = view.findViewById(R.id.ib_flavour_close);
+        ib_flavour_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
         btn_flavour_confirm = view.findViewById(R.id.btn_flavour_confirm);
         btn_flavour_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +88,8 @@ public class SelectFlavourPopupWindow extends PopupWindow {
         }
         if(!mIsShowing){
             mIsShowing = true;
-            popupWindow.showAtLocation(LayoutInflater.from(context).inflate(R.layout.fragment_dish,null),Gravity.BOTTOM,0,0);
+            popupWindow.showAtLocation(LayoutInflater.from(context)
+                    .inflate(R.layout.fragment_dish,null),Gravity.BOTTOM,0,0);
         }
     }
 
@@ -82,18 +97,21 @@ public class SelectFlavourPopupWindow extends PopupWindow {
 
     public void dismiss(){
         if(popupWindow != null && mIsShowing){
-            setBackgroundAlpha(1f); //恢复背景变暗
             popupWindow.dismiss();
             mIsShowing = false;
         }
     }
 
+    @Override
+    public void onDismiss() {
+        setBackgroundAlpha(1f); //恢复背景变暗
+    }
 
-    public interface ConfrimButtonOnClickListener {
+    public interface ConfirmButtonOnClickListener {
         void setSelectedFlavourPos(int pos);
     }
 
-    public void setConfrmButtonOnClickListener(ConfrimButtonOnClickListener listener){
+    public void setConfrmButtonOnClickListener(ConfirmButtonOnClickListener listener){
         this.listener = listener;
     }
 
