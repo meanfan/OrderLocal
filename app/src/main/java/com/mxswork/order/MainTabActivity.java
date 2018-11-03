@@ -136,6 +136,8 @@ public class MainTabActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return titles[position];
         }
+
+
     }
     
     @Override

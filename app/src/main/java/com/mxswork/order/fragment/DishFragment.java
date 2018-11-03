@@ -1,6 +1,7 @@
 package com.mxswork.order.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,14 +12,17 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.mxswork.order.OrderActivity;
 import com.mxswork.order.R;
@@ -41,15 +45,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
+@SuppressLint("ClickableViewAccessibility")
 public class DishFragment extends Fragment
         implements AdapterView.OnItemClickListener,
         DishRightListViewAdapter.DishItemOnClickListener,
         BannerViewAdapter.BannerItemOnClickListener,
         SelectFlavourPopupWindow.ConfrimButtonOnClickListener{
     public static final String TAG = "DishFragment";
-    private BannerView bannerView;
-    private BannerViewAdapter bannerViewAdapter;
+    private ViewFlipper vf_banner;
     private ListView dishLeftListView;
     private DishRightListView dishRightListView;
     private DishLeftListViewAdapter leftAdapter;
@@ -93,6 +96,15 @@ public class DishFragment extends Fragment
 //        bannerView.setAdapter(bannerViewAdapter);
 //        bannerViewAdapter.setBannerItemOnClickListener(this);
 
+        vf_banner = getActivity().findViewById(R.id.vf_banner);
+        for(Dish dish:featureDishes){
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_banner,null);
+            ((ImageView)view.findViewById(R.id.iv_banner)).
+                    setImageBitmap(LocalJsonHelper.readDishPic(getActivity(),dish));
+            ((TextView)view.findViewById(R.id.tv_banner)).setText(dish.getName());
+            vf_banner.addView(view);
+        }
+
         leftAdapter = new DishLeftListViewAdapter(getActivity());
         leftAdapter.updateTagList(getTags());
 
@@ -115,6 +127,51 @@ public class DishFragment extends Fragment
     }
 
     private void initListener(){
+        vf_banner.setOnTouchListener(new View.OnTouchListener() {
+            private float startX;
+            private float endX;
+            private float moveX = 100f;
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //获取起点X坐标
+                        startX = motionEvent.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //获取终点X坐标
+                        endX = motionEvent.getX();
+                        if (endX - startX > moveX) {
+                            vf_banner.setInAnimation(getActivity(), R.anim.banner_in);
+                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_out);
+                            vf_banner.showPrevious();
+                            Log.d(TAG, "onTouch: left");
+                        } else if (startX - endX > moveX) {
+                            vf_banner.setInAnimation(getActivity(), R.anim.banner_in);
+                            vf_banner.setOutAnimation(getActivity(), R.anim.banner_out);
+                            vf_banner.showNext();
+                            Log.d(TAG, "onTouch: right");
+                        }else {
+                            vf_banner.performClick(); //必须调用，否则点击事件无效
+                            Log.d(TAG, "onTouch: click");
+
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+
+        vf_banner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = featureDishes.get(vf_banner.getDisplayedChild()).getId();
+                int pos = dishes.indexOf(findDishById(dishes,id));
+                dishRightListView.setSelection(pos);
+            }
+        });
+
+
         dishLeftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -26,16 +26,28 @@
                 <!--android:orientation="horizontal" />-->
         <!--</LinearLayout>-->
     <!--</com.mxswork.order.view.BannerView>-->
-    <TextView
-        android:id="@+id/banner_view"
+    <!--<TextView-->
+        <!--android:id="@+id/banner_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:text="Banner"-->
+        <!--android:gravity="center"/>-->
+    <ViewFlipper
+        android:id="@+id/vf_banner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:text="Banner"
-        android:gravity="center"/>
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:autoStart="true"
+        android:flipInterval="3000"
+        android:inAnimation="@anim/banner_in"
+        android:outAnimation="@anim/banner_out"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/banner_view"
+        android:layout_below="@+id/vf_banner"
         android:layout_above="@+id/rl_cart"
         android:orientation="horizontal">
         <ListView android:id="@+id/lv_dish_left"
