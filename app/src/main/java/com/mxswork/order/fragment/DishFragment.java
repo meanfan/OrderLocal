@@ -357,7 +357,7 @@ public class DishFragment extends Fragment
                 List<String> flavours = dish.getFlavour();
                 if(flavours != null && flavours.size()>0) {
                     SelectFlavourPopupWindow popupWindow = new SelectFlavourPopupWindow(getActivity(),flavours);
-                    popupWindow.setConfrmButtonOnClickListener(this);
+                    popupWindow.setConfirmButtonOnClickListener(this);
                     popupWindow.popup();
                     //暂存当前变量
                     savedVariables = new HashMap<>();

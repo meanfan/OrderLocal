@@ -38,7 +38,7 @@ public class SelectFlavourPopupWindow extends PopupWindow implements PopupWindow
         View view = View.inflate(context, R.layout.view_select_dish_flavour, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
+        popupWindow.setFocusable(true);  //屏蔽外部控件点击
         popupWindow.setOutsideTouchable(false);
         //popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.colorWhite)));
@@ -111,7 +111,7 @@ public class SelectFlavourPopupWindow extends PopupWindow implements PopupWindow
         void setSelectedFlavourPos(int pos);
     }
 
-    public void setConfrmButtonOnClickListener(ConfirmButtonOnClickListener listener){
+    public void setConfirmButtonOnClickListener(ConfirmButtonOnClickListener listener){
         this.listener = listener;
     }
 
