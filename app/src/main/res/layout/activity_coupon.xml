@@ -11,6 +11,13 @@
         app:title="我的优惠券"
         app:titleTextColor="@color/colorWhite"
         android:background="@color/colorPrimary" />
+    <TextView
+        android:id="@+id/tv_coupon_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="无优惠券"
+        android:gravity="center"
+        android:visibility="gone"/>
     <ScrollView
         android:id="@+id/sv_coupon_list"
         android:layout_width="match_parent"

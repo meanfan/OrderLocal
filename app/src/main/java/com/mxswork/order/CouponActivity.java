@@ -44,6 +44,7 @@ public class CouponActivity extends AppCompatActivity {
 
     private void initListView(){
         if(userCouponInfos.length==0){
+            findViewById(R.id.tv_coupon_none).setVisibility(View.VISIBLE);
             //TODO 显示无优惠券
         }
         LinearLayout ll_coupon_list = findViewById(R.id.ll_coupon_list);
