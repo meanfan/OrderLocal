@@ -70,6 +70,8 @@ public class MainTabActivity extends AppCompatActivity {
         //FileUtils.copyAssetsFile2DiskFileDir(getContext(),LocalJsonHelper.FILENAME_DISH);
         FileUtils.copyAssetsFile2DiskFileDir(this,LocalJsonHelper.FILENAME_ORDER);
         FileUtils.copyAssetsFile2DiskFileDir(this,LocalJsonHelper.FILENAME_USER);
+        FileUtils.copyAssetsFile2DiskFileDir(this,LocalJsonHelper.FILENAME_COUPON);
+
         setUser();
         loadDishes();
     }

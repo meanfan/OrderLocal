@@ -2,7 +2,6 @@ package com.mxswork.order;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,7 @@ import com.mxswork.order.pojo.OrderDishInfo;
 import com.mxswork.order.utils.LocalJsonHelper;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class OrderActivity extends AppCompatActivity {
     private static final String TAG = "OrderActivity";
@@ -77,7 +74,7 @@ public class OrderActivity extends AppCompatActivity {
             int id = orderDishInfo[i].getId();
             int count = orderDishInfo[i].getCount();
             String flavour = orderDishInfo[i].getFlavour();
-            Dish dish = LocalJsonHelper.readDishById(this,id);
+            Dish dish = LocalJsonHelper.getDishById(this,id);
             String name = dish.getName();
             float price = dish.getPrice()*count;
             String name_flavour;
@@ -110,7 +107,7 @@ public class OrderActivity extends AppCompatActivity {
                 LinearLayout packageDishView = itemView.findViewById(R.id.ll_order_list_item_package_dish);
                 for(int j=0;j<dishInfos.length;j++){
                     Log.d(TAG, "initOrderView: singleDish"+dishInfos[j].getId());
-                    Dish singleDish = LocalJsonHelper.readDishById(this,dishInfos[j].getId());
+                    Dish singleDish = LocalJsonHelper.getDishById(this,dishInfos[j].getId());
                     String singleDishName = singleDish.getName();
                     int singleDishCount = dishInfos[j].getAmount();
                     float singleDishPrice = singleDish.getPrice()*singleDishCount;

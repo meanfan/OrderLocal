@@ -65,7 +65,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         Order order = orders.get(pos);
         String firstDishName;
         int firstOrderDishId = order.getDishes()[0].getId();
-        Dish firstDish = LocalJsonHelper.readDishById(context,firstOrderDishId);
+        Dish firstDish = LocalJsonHelper.getDishById(context,firstOrderDishId);
         if(firstDish!=null){
             firstDishName = firstDish.getName();
             vh.iv_order_list_pic.setImageBitmap(LocalJsonHelper.readDishPic(context,firstDish));

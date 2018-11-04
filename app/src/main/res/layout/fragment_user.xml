@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
     <com.mxswork.order.view.CircleImageView
         android:id="@+id/iv_user_avadar"
         android:layout_width="100dp"
@@ -18,5 +20,6 @@
         android:gravity="center"
         android:text="Name"
         android:textSize="20sp"/>
+    <include android:id="@+id/rl_user_coupon" layout="@layout/item_user_info_menu"/>
 </LinearLayout>
 

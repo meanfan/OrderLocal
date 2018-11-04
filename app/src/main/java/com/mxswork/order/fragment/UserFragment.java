@@ -1,18 +1,21 @@
 package com.mxswork.order.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mxswork.order.CouponActivity;
 import com.mxswork.order.R;
 import com.mxswork.order.pojo.User;
 
-
 public class UserFragment extends Fragment {
+    private static final String TAG = "UserFragment";
     private User user;
     private TextView tv_user_name;
     @Nullable
@@ -27,6 +30,15 @@ public class UserFragment extends Fragment {
         super.onStart();
         tv_user_name = getActivity().findViewById(R.id.tv_user_name);
         tv_user_name.setText(user.getName());
+        getActivity().findViewById(R.id.rl_user_coupon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),CouponActivity.class);
+                intent.putExtra("user",user);
+                Log.d(TAG, "onClick: "+user.toString());
+                startActivity(intent);
+            }
+        });
     }
 
     public void setUser(User user){

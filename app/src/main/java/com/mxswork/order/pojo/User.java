@@ -1,13 +1,21 @@
 package com.mxswork.order.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
+    @SerializedName("uid")
     private int uid;
+    @SerializedName("phone")
     private String phone;
+    @SerializedName("ordersId")
     private int[] ordersId;
-    private int[] couponsId;
+    @SerializedName("couponInfo")
+    private UserCouponInfo[] couponInfo;
+    @SerializedName("name")
     private String name;
 
     public int getUid() {
@@ -34,12 +42,12 @@ public class User {
         this.ordersId = ordersId;
     }
 
-    public int[] getCouponsId() {
-        return couponsId;
+    public UserCouponInfo[] getCouponInfo() {
+        return couponInfo;
     }
 
-    public void setCouponsId(int[] couponsId) {
-        this.couponsId = couponsId;
+    public void setCouponInfo(UserCouponInfo[] couponInfo) {
+        this.couponInfo = couponInfo;
     }
 
     public String getName() {
@@ -56,8 +64,37 @@ public class User {
                 "uid=" + uid +
                 ", phone='" + phone + '\'' +
                 ", ordersId=" + Arrays.toString(ordersId) +
-                ", couponsId=" + Arrays.toString(couponsId) +
+                ", couponInfo=" + Arrays.toString(couponInfo) +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public static class UserCouponInfo implements Serializable{
+        int id;
+        int count;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public String toString() {
+            return "UserCouponInfo{" +
+                    "id=" + id +
+                    ", count=" + count +
+                    '}';
+        }
     }
 }

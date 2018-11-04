@@ -14,13 +14,15 @@
         <activity android:name=".StartCountDownActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainTabActivity"
             android:label="@string/title_activity_menu" />
-        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".OrderActivity" />
+        <activity android:name=".CouponActivity"></activity>
     </application>
 
 </manifest>

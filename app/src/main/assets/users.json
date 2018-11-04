@@ -3,7 +3,11 @@
     "uid":10,
     "phone":"10000",
     "ordersId":[1],
-    "couponsId":[],
+    "couponInfo":[
+      {"id":11,"count":3},
+      {"id":21,"count":2},
+      {"id":23,"count":1}
+    ],
     "name":"Guest"
   }
 ]

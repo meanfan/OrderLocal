@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.mxswork.order.pojo.Coupon;
+import com.mxswork.order.pojo.CouponDiscount;
+import com.mxswork.order.pojo.CouponReduction;
 import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.pojo.DishSingle;
 import com.mxswork.order.pojo.DishPackage;
@@ -28,6 +31,7 @@ public class LocalJsonHelper {
     public static final String FILENAME_DISH = "dishes.json";
     public static final String FILENAME_ORDER = "orders.json";
     public static final String FILENAME_USER = "users.json";
+    public static final String FILENAME_COUPON = "coupons.json";
 
     public static final String TAG = "LocalJsonHelper";
 
@@ -84,12 +88,12 @@ public class LocalJsonHelper {
             JSONObject jsonObject = new JSONObject(json);
 
             JSONArray jsonArray = jsonObject.getJSONArray("dishPackage");
-            Log.d(TAG, jsonArray.toString());
+            //Log.d(TAG, jsonArray.toString());
             for(int i=0;i<jsonArray.length();i++){
                 DishPackage pack = LocalJsonHelper.json2Object(jsonArray.get(i).toString(),DishPackage.class);
                 pack.setAmount(0);
                 dishes.add(pack);
-                Log.d(TAG, "getDishPackage: "+pack.toString());
+                //Log.d(TAG, "getDishPackage: "+pack.toString());
             }
 
             jsonArray = jsonObject.getJSONArray("dishSingle");
@@ -98,7 +102,7 @@ public class LocalJsonHelper {
                 dish.setAmount(0);
                 //dish.setAmount(1);
                 dishes.add(dish);
-                Log.d(TAG, "getDishSingle: "+dish.toString());
+                //Log.d(TAG, "getDishSingle: "+dish.toString());
             }
 
         }catch (JSONException e){
@@ -112,18 +116,64 @@ public class LocalJsonHelper {
     }
 
     public static List<User> readUsers(Context context){
-        String json = LocalJsonHelper.readJsonFromAssets(context,FILENAME_USER);
+        String json = LocalJsonHelper.readJsonFromDisk(context,FILENAME_USER);
+        Log.d(TAG, "readUsers: "+json);
         List<User> users = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(json);
             for(int i=0;i<jsonArray.length();i++){
                 User user = LocalJsonHelper.json2Object(jsonArray.get(i).toString(),User.class);
+                Log.d(TAG, "readUsers: "+user.toString());
                 users.add(user);
             }
         }catch (JSONException e){
             e.printStackTrace();
         }
         return users;
+    }
+
+    public static User getUserById(Context context,int id){
+        List<User> users = readUsers(context);
+        for(User user:users){
+            if(user.getUid()==id){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static void writeUsers(Context context,String json){
+        FileUtils.writeString2DiskFileDir(context,json,FILENAME_USER);
+    }
+
+    public static void deleteUserCoupons(Context context,int userId,int couponId,int amount){
+        List<User> users = readUsers(context);
+        for(User user:users){
+            if(user.getUid()==userId){
+                User.UserCouponInfo[] couponInfo = user.getCouponInfo();
+                for(int i=0;i<couponInfo.length;i++){
+                    if(couponInfo[i].getId() == couponId){
+                        int num = couponInfo[i].getCount() - amount;
+                        User.UserCouponInfo[] newCouponInfo;
+                        if(num>0){
+                            couponInfo[i].setCount(num);
+                            newCouponInfo = couponInfo.clone();
+                        }else {
+                            newCouponInfo = new User.UserCouponInfo[couponInfo.length-1];
+                            for(int j=0;j<i;j++){
+                                newCouponInfo[j] = couponInfo[j];
+                            }
+                            for(int j=i;j<newCouponInfo.length;j++){
+                                newCouponInfo[j] = couponInfo[j+1];
+                            }
+                        }
+                        user.setCouponInfo(newCouponInfo);
+                        writeUsers(context,object2Json(user));
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public static List<Order> readOrders(Context context){
@@ -142,7 +192,7 @@ public class LocalJsonHelper {
         return orders;
     }
 
-    public static Dish readDishById(Context context,int id){
+    public static Dish getDishById(Context context, int id){
         List<Dish> dishes = readDishes(context);
         for(Dish dish:dishes){
             if(dish.getId()==id){
@@ -189,6 +239,40 @@ public class LocalJsonHelper {
         }
         return -1;
     }
+
+    public static List<Coupon> readCoupons(Context context){
+        String json = readJsonFromDisk(context,FILENAME_COUPON);
+        Log.d(TAG, "readOrders: JSON:"+json);
+        List<Coupon> coupons = new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("couponDiscount");
+            for(int i=0;i<jsonArray.length();i++){
+                CouponDiscount coupon = LocalJsonHelper.json2Object(jsonArray.get(i).toString(),CouponDiscount.class);
+                coupons.add(coupon);
+            }
+            jsonArray = jsonObject.getJSONArray("couponReduction");
+            for(int i=0;i<jsonArray.length();i++){
+                CouponReduction coupon = LocalJsonHelper.json2Object(jsonArray.get(i).toString(),CouponReduction.class);
+                coupons.add(coupon);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return coupons;
+    }
+
+    public static Coupon getCouponById(Context context,int id) {
+        List<Coupon> coupons = readCoupons(context);
+        for(Coupon coupon:coupons){
+            if(coupon.getId() == id){
+                return coupon;
+            }
+        }
+        return null;
+    }
+
+
 
 
 }

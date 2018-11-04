@@ -1,0 +1,13 @@
+{
+  "couponDiscount":[
+    {"id":11,"name":"95折优惠券","rate":0.95},
+    {"id":12,"name":"9折优惠券","rate":0.9},
+    {"id":13,"name":"8折优惠券","rate":0.8},
+    {"id":14,"name":"5折优惠券","rate":0.5}
+  ],
+  "couponReduction":[
+    {"id":21,"name":"满20-3优惠券","threshold":20,"reduction":3},
+    {"id":22,"name":"满30-5优惠券","threshold":30,"reduction":5},
+    {"id":23,"name":"满50-8优惠券","threshold":50,"reduction":8}
+  ]
+}
