@@ -1,5 +1,6 @@
 package com.mxswork.order;
 
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mxswork.order.pojo.Coupon;
 import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.pojo.DishPackage;
 import com.mxswork.order.pojo.Order;
@@ -24,10 +26,15 @@ public class OrderActivity extends AppCompatActivity {
     private static final String TAG = "OrderActivity";
     private RelativeLayout in_desk,in_id,in_time;
     private LinearLayout ll_order_list_dish;
-    private TextView tv_order_list_total_price;
+    private TextView tv_order_coupon_title,tv_order_coupon_discount,tv_order_list_total_price,tv_order_list_final_price;
     private Order order;
     private String time;
+    private Coupon coupon;
+    private boolean isUseCoupon;
+    private String couponName;
+    private String couponPriceString;
     private String totalPriceString;
+    private String finalPriceString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,17 @@ public class OrderActivity extends AppCompatActivity {
         Date date = new Date(order.getTime());
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
         time = dateFormat.format(date);
-        totalPriceString = String.format("￥%.1f",order.getTotal_price());
+        totalPriceString =String.format("￥%.1f",order.getTotalPrice());
+        finalPriceString = String.format("￥%.1f",order.getFinalPrice());
+        int useCouponId = order.getUseCouponId();
+        if(useCouponId>0) {
+            coupon = LocalJsonHelper.getCouponById(this,useCouponId);
+            couponName = coupon.getName();
+            couponPriceString = String.format("-￥%.2f",order.getTotalPrice()-order.getFinalPrice());
+            isUseCoupon =true;
+        }else {
+           isUseCoupon = false;
+        }
     }
 
     private void initOrderView(){
@@ -150,9 +167,32 @@ public class OrderActivity extends AppCompatActivity {
             ll_order_list_dish.addView(itemView);
         }
 
+        View couponView = LayoutInflater.from(this).inflate(R.layout.item_order_info_coupon,null);
+        tv_order_coupon_title = couponView.findViewById(R.id.tv_order_coupon_title);
+        tv_order_coupon_discount = couponView.findViewById(R.id.tv_order_coupon_discount);
+        if(isUseCoupon){
+            String couponTitle = String.format("使用优惠券：%s",couponName);
+            tv_order_coupon_title.setText(couponTitle);
+            tv_order_coupon_discount.setText(couponPriceString);
+        }else {
+            tv_order_coupon_title.setText("未使用优惠券");
+            tv_order_coupon_title.setTextColor(getResources().getColor(R.color.colorDefaultGray));
+            tv_order_coupon_discount.setVisibility(View.GONE);
+        }
+        ll_order_list_dish.addView(couponView);
+
         View totalView = LayoutInflater.from(this).inflate(R.layout.item_order_info_dish_total,null);
         tv_order_list_total_price = totalView.findViewById(R.id.tv_order_list_total_price);
-        tv_order_list_total_price.setText(totalPriceString);
+        if(isUseCoupon){
+            tv_order_list_total_price.setText(totalPriceString);
+            tv_order_list_total_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//添加删除线
+        }else {
+            tv_order_list_total_price.setVisibility(View.GONE);
+        }
+
+        tv_order_list_final_price = totalView.findViewById(R.id.tv_order_list_final_price);
+        tv_order_list_final_price.setText(finalPriceString);
+
         ll_order_list_dish.addView(totalView);
     }
 }

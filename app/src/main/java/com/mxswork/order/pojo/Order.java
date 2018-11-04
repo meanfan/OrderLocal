@@ -9,7 +9,9 @@ public class Order implements Serializable {
     private OrderDishInfo[] dishes;
     private int desk;
     private long time;
-    private float total_price;
+    private int useCouponId;
+    private float totalPrice;
+    private float finalPrice;
 
     public int getId() {
         return id;
@@ -51,12 +53,28 @@ public class Order implements Serializable {
         this.time = time;
     }
 
-    public float getTotal_price() {
-        return total_price;
+    public int getUseCouponId() {
+        return useCouponId;
     }
 
-    public void setTotal_price(float total_price) {
-        this.total_price = total_price;
+    public void setUseCouponId(int useCouponId) {
+        this.useCouponId = useCouponId;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public float getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(float finalPrice) {
+        this.finalPrice = finalPrice;
     }
 
     @Override
@@ -67,7 +85,9 @@ public class Order implements Serializable {
                 ", dishes=" + Arrays.toString(dishes) +
                 ", desk=" + desk +
                 ", time=" + time +
-                ", total_price=" + total_price +
+                ", useCouponId=" + useCouponId +
+                ", totalPrice=" + totalPrice +
+                ", finalPrice=" + finalPrice +
                 '}';
     }
 }

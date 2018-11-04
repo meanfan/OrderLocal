@@ -38,4 +38,9 @@ public class Coupon implements CouponImpl {
         }
         return 0;
     }
+
+    @Override
+    public float calcPrice(float price) {
+        return price;
+    }
 }

@@ -28,6 +28,7 @@ import com.mxswork.order.OrderActivity;
 import com.mxswork.order.R;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
+import com.mxswork.order.pojo.Coupon;
 import com.mxswork.order.pojo.Dish;
 import com.mxswork.order.pojo.Order;
 import com.mxswork.order.pojo.OrderDishInfo;
@@ -202,7 +203,8 @@ public class DishFragment extends Fragment
         btn_purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Order order = generateOrder();
+                //TODO 优惠券选择
+                final Order order = generateOrder(selected_dish_price,0);
                 Log.d(TAG, "onClick: "+order.toString());
                 LocalJsonHelper.insertOrder(getActivity(),order);
                 //Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
@@ -246,7 +248,7 @@ public class DishFragment extends Fragment
         return orderDishInfo;
     }
 
-    private Order generateOrder(){
+    private Order generateOrder(float totalPrice,int couponId){
         Order order = new Order();
         order.setUid(user.getUid());
         List<OrderDishInfo> mergedInfos = mergeOrderDishInfo(cartDishInfos);
@@ -256,7 +258,16 @@ public class DishFragment extends Fragment
         order.setDesk(desk);
         Date time = new Date();
         order.setTime(time.getTime());
-        order.setTotal_price(selected_dish_price);
+        order.setTotalPrice(totalPrice);
+        float finalPrice = totalPrice;
+        if(couponId>0){
+            Coupon coupon = LocalJsonHelper.getCouponById(getActivity(),couponId);
+            finalPrice = coupon.calcPrice(totalPrice);
+            order.setUseCouponId(couponId);
+        }else {
+            order.setUseCouponId(0);
+        }
+        order.setFinalPrice(finalPrice);
         return order;
     }
 

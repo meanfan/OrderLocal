@@ -80,7 +80,7 @@ public class OrderListViewAdapter extends BaseAdapter {
             DateFormat dateFormat = DateFormat.getDateTimeInstance();
             String time = dateFormat.format(date);
             vh.tv_order_list_time.setText(time);
-            String price = String.format("￥%.1f",order.getTotal_price());
+            String price = String.format("￥%.1f",order.getFinalPrice());
             vh.tv_order_list_price.setText(price);
         }
         return view;

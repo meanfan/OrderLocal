@@ -8,15 +8,19 @@ public class CouponReduction extends Coupon {
 
     @Override
     public float calcPrice(Context context, Order order) {
-        float sum = super.calcPrice(context,order);
-        if(sum>=threshold){
-            float rst= sum-reduction;
+        return calcPrice(super.calcPrice(context,order));
+    }
+
+    @Override
+    public float calcPrice(float price) {
+        if(price>=threshold){
+            float rst= price-reduction;
             if(rst<0f){
                 rst=0f;
             }
             return rst;
         }else {
-            return sum;
+            return price;
         }
     }
 

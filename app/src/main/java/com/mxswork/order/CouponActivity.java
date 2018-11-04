@@ -38,7 +38,7 @@ public class CouponActivity extends AppCompatActivity {
 
     private void initData(){
         user = (User) getIntent().getSerializableExtra("user");
-        Log.d(TAG, "initData: user:::" + user.toString());
+        //Log.d(TAG, "initData: user:" + user.toString());
         userCouponInfos = user.getCouponInfo();
     }
 
