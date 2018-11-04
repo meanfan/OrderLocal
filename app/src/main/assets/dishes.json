@@ -2,19 +2,34 @@
   "name":"dishes",
   "dishPackage":[
     {
-      "id":4,
-      "name":"藤椒汉堡套餐",
+      "id":1,
+      "name":"藤椒汉堡双人套餐",
+      "tag":"套餐",
+      "isFeature":true,
+      "dishes":[
+        {"id":11,"amount":2},
+        {"id":22,"amount":2},
+        {"id":32,"amount":2}
+      ],
+      "flavour":["微辣","中辣","特辣"],
+      "desc":"藤椒汉堡x2+可乐x2+藤椒鸡腿卷x2",
+      "price":70.0,
+      "picPath":"dish_pic_01.jpg"
+    },
+    {
+      "id":2,
+      "name":"藤椒汉堡单人套餐",
       "tag":"套餐",
       "isFeature":true,
       "dishes":[
         {"id":11,"amount":1},
         {"id":22,"amount":1},
-        {"id":32,"amount":2}
+        {"id":32,"amount":1}
       ],
-      "flavour":["不辣","辣"],
-      "desc":"藤椒汉堡x1+可乐x1+藤椒鸡腿卷x2",
+      "flavour":["微辣","中辣","特辣"],
+      "desc":"藤椒汉堡x1+可乐x1+藤椒鸡腿卷x1",
       "price":40.0,
-      "picPath":"dish_pic_4.jpg"
+      "picPath":"dish_pic_02.jpg"
     }
   ],
   "dishSingle":[
@@ -23,20 +38,30 @@
       "name":"藤椒汉堡",
       "tag":"汉堡/卷",
       "isFeature":true,
-      "flavour":["不辣","微辣","特辣"],
+      "flavour":["微辣","中辣","特辣"],
       "desc":"藤椒双层堡x1",
       "price":19.0,
-      "picPath":"dish_pic_1.jpg"
+      "picPath":"dish_pic_11.jpg"
     },
     {
       "id":12,
       "name":"香辣鸡腿堡",
       "tag":"汉堡/卷",
       "isFeature":false,
-      "flavour":["不辣","微辣","特辣"],
+      "flavour":["微辣","中辣","特辣"],
       "desc":"香辣鸡腿堡x1",
       "price":18.0,
-      "picPath":"dish_pic_1.jpg"
+      "picPath":"dish_pic_12.jpg"
+    },
+    {
+      "id":13,
+      "name":"新奥尔良烤鸡腿堡",
+      "tag":"汉堡/卷",
+      "isFeature":false,
+      "flavour":["不辣","微辣","特辣"],
+      "desc":"新奥尔良烤鸡腿堡x1",
+      "price":18.0,
+      "picPath":"dish_pic_13.jpg"
     },
     {
       "id":21,
@@ -46,57 +71,107 @@
       "flavour":["不辣","辣"],
       "desc":"老北京鸡肉卷x1",
       "price":14.0,
-      "picPath":"dish_pic_3.jpg"
+      "picPath":"dish_pic_21.jpg"
     },
     {
       "id":22,
       "name":"藤椒鸡腿卷",
       "tag":"汉堡/卷",
-      "isFeature":true,
+      "isFeature":false,
       "flavour":["辣","不辣"],
       "desc":"藤椒鸡腿卷x1",
       "price":12.0,
-      "picPath":"dish_pic_3.jpg"
+      "picPath":"dish_pic_21.jpg"
     },
     {
       "id":31,
+      "name":"3块热辣香骨鸡",
+      "tag":"鸡块/翅",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"热辣香骨鸡x3",
+      "price":11.0,
+      "picPath":"dish_pic_31.jpg"
+    },
+    {
+      "id":32,
+      "name":"2块香辣鸡翅",
+      "tag":"鸡块/翅",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"热辣香骨鸡x3",
+      "price":11.0,
+      "picPath":"dish_pic_32.jpg"
+    },
+    {
+      "id":41,
+      "name":"波纹霸王薯条(大)",
+      "tag":"薯条",
+      "isFeature":true,
+      "flavour":[],
+      "desc":"波纹霸王薯条(大份)x1",
+      "price":13.0,
+      "picPath":"dish_pic_41.jpg"
+    },
+    {
+      "id":42,
+      "name":"波纹霸王薯条(中)",
+      "tag":"薯条",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"波纹霸王薯条(中份)x1",
+      "price":11.0,
+      "picPath":"dish_pic_41.jpg"
+    },
+    {
+      "id":43,
+      "name":"波纹霸王薯条(小)",
+      "tag":"薯条",
+      "isFeature":false,
+      "flavour":[],
+      "desc":"波纹霸王薯条(小份)x1",
+      "price":9.0,
+      "picPath":"dish_pic_41.jpg"
+    },
+    {
+      "id":51,
       "name":"可百事乐(大杯)",
       "tag":"饮料",
       "isFeature":false,
       "flavour":[],
       "desc":"可百事乐800ml x1",
       "price":5.0,
-      "picPath":"dish_pic_2.jpg"
+      "picPath":"dish_pic_51.jpg"
     },
     {
-      "id":32,
+      "id":52,
       "name":"可百事乐(中杯)",
       "tag":"饮料",
       "isFeature":false,
       "flavour":[],
       "desc":"可百事乐600ml x1",
       "price":4.0,
-      "picPath":"dish_pic_2.jpg"
+      "picPath":"dish_pic_51.jpg"
     },
     {
-      "id":33,
+      "id":53,
       "name":"可百事乐(小杯)",
       "tag":"饮料",
       "isFeature":false,
       "flavour":[],
       "desc":"可百事乐300ml x1",
       "price":3.0,
-      "picPath":"dish_pic_2.jpg"
+      "picPath":"dish_pic_51.jpg"
     },
     {
-      "id":35,
-      "name":"雪碧(小杯)",
+      "id":54,
+      "name":"柠檬红茶",
       "tag":"饮料",
       "isFeature":false,
-      "flavour":[],
-      "desc":"雪碧300ml x1",
-      "price":3.0,
-      "picPath":"dish_pic_2.jpg"
+      "flavour":["热","常温","加冰","去冰"],
+      "desc":"热柠檬红茶 x1",
+      "price":13.0,
+      "picPath":"dish_pic_54.jpg"
     }
   ]
 }

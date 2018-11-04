@@ -204,7 +204,7 @@ public class DishFragment extends Fragment
             @Override
             public void onClick(View view) {
                 //TODO 优惠券选择
-                final Order order = generateOrder(selected_dish_price,0);
+                final Order order = generateOrder(selected_dish_price,11);
                 Log.d(TAG, "onClick: "+order.toString());
                 LocalJsonHelper.insertOrder(getActivity(),order);
                 //Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
