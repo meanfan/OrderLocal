@@ -10,6 +10,7 @@
     <color name="colorLittleGray">#eeeeee</color>
     <color name="colorListWhiteBg">#FFFFFF</color>
     <color name="colorDefaultGray">#ebebeb</color>
+    <color name="colorBlue">#3A4CFF</color>
     <color name="colorButtonPurchaseActive">#3A4CFF</color>
     <color name="colorButtonPurchaseDisable">#CCCCCC</color>
     <color name="colorButtonPurchasePress">#3A0CF0</color>

@@ -15,8 +15,8 @@ import com.mxswork.order.utils.LocalJsonHelper;
 
 public class CouponActivity extends AppCompatActivity {
     private static final String TAG = "CouponActivity";
-    User user;
-    User.UserCouponInfo[] userCouponInfos;
+    private User user;
+    private User.UserCouponInfo[] userCouponInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,6 @@ public class CouponActivity extends AppCompatActivity {
     private void initListView(){
         if(userCouponInfos.length==0){
             findViewById(R.id.tv_coupon_none).setVisibility(View.VISIBLE);
-            //TODO 显示无优惠券
         }
         LinearLayout ll_coupon_list = findViewById(R.id.ll_coupon_list);
         for(int i=0;i<userCouponInfos.length;i++){

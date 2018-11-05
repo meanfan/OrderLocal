@@ -40,11 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:text="0 元"
-            android:textColor="#000000"
+            android:text="￥ 0"
+            android:textColor="@color/colorRed"
             android:textSize="20sp"/>
         <TextView
             android:id="@+id/tv_cart_info"
@@ -52,10 +52,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:text="未选择"/>
+
+        <TextView
+            android:id="@+id/tv_select_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btn_purchase"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorBlue"
+            android:text="点此选择使用优惠券"/>
 
         <Button
             android:id="@+id/btn_purchase"

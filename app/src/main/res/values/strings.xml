@@ -4,6 +4,8 @@
     <string name="menu_list">菜单</string>
     <string name="order_list">订单</string>
     <string name="mine">我的</string>
+    <string name="tv_text_select_coupon_has">✓%s</string>
+    <string name="tv_text_select_coupon_none">点此选择优惠券</string>
 
     <item name="tag_dish_id" type="id" />
     <item name="tag_list_tv_amount" type="id" />

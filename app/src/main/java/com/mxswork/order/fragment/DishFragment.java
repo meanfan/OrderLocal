@@ -26,6 +26,7 @@ import android.widget.ViewFlipper;
 
 import com.mxswork.order.OrderActivity;
 import com.mxswork.order.R;
+import com.mxswork.order.SelectCouponActivity;
 import com.mxswork.order.adpater.DishLeftListViewAdapter;
 import com.mxswork.order.adpater.DishRightListViewAdapter;
 import com.mxswork.order.pojo.Coupon;
@@ -50,6 +51,9 @@ public class DishFragment extends Fragment
         DishRightListViewAdapter.DishItemOnClickListener,
         SelectFlavourPopupWindow.ConfirmButtonOnClickListener {
     public static final String TAG = "DishFragment";
+    private static final int REQUEST_COUPON = 0;
+    public static final int RESULT_OK = 1;
+    public static final int RESULT_CANCEL = 0;
     private ViewFlipper vf_banner;
     private ListView dishLeftListView;
     private DishRightListView dishRightListView;
@@ -58,6 +62,7 @@ public class DishFragment extends Fragment
     private Button btn_purchase;
     private TextView tv_cart_info;
     private TextView tv_cart_price;
+    private TextView tv_select_coupon;
     private int position;
     private List<Dish> dishes;
     private List<Dish> featureDishes;
@@ -65,6 +70,8 @@ public class DishFragment extends Fragment
     private List<String> tags;
     private List<Integer> firstTagInDishes;
     private HashMap<String,Object> savedVariables;
+    private Coupon selectedCoupon;
+    private int selectedCouponId = -1;
     private float selected_dish_price;
     private User user;
     private int desk;
@@ -77,13 +84,26 @@ public class DishFragment extends Fragment
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         initView();
         initListener();
+        Log.d(TAG, "onActivityCreated: !!!!!!");
+        selectedCouponId  = -1;
         selected_dish_price = 0;
         desk = 1;
         cartDishInfos = new ArrayList<>();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     private void initView(){
@@ -114,6 +134,7 @@ public class DishFragment extends Fragment
 
         btn_purchase =getActivity().findViewById(R.id.btn_purchase);
         tv_cart_info = getActivity().findViewById(R.id.tv_cart_info);
+        tv_select_coupon = getActivity().findViewById(R.id.tv_select_coupon);
         tv_cart_price = getActivity().findViewById(R.id.tv_cart_price);
 
     }
@@ -200,11 +221,20 @@ public class DishFragment extends Fragment
             }
         });
 
+        tv_select_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SelectCouponActivity.class);
+                intent.putExtra("user",user);
+                startActivityForResult(intent, REQUEST_COUPON);
+            }
+        });
+
         btn_purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 优惠券选择
-                final Order order = generateOrder(selected_dish_price,11);
+                Log.d(TAG, "onClick: selectedCouponId:"+selectedCouponId);
+                final Order order = generateOrder(selected_dish_price,selectedCouponId);
                 Log.d(TAG, "onClick: "+order.toString());
                 LocalJsonHelper.insertOrder(getActivity(),order);
                 //Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
@@ -226,13 +256,16 @@ public class DishFragment extends Fragment
     }
 
     private void cleanDishSelected(){
+        selectedCouponId = -1;
         selected_dish_price = 0;
+        selectedCoupon = null;
         cartDishInfos = new ArrayList<>();
         for(Dish dish:dishes){
             dish.setAmount(0);
         }
 
         //界面更新
+        tv_select_coupon.setText(getText(R.string.tv_text_select_coupon_none));
         rightAdapter.updateDishesList(dishes);
         rightAdapter.notifyDataSetChanged();
         updateCartLayout(0,0);
@@ -260,12 +293,12 @@ public class DishFragment extends Fragment
         order.setTime(time.getTime());
         order.setTotalPrice(totalPrice);
         float finalPrice = totalPrice;
-        if(couponId>0){
+        if(couponId>-1){
             Coupon coupon = LocalJsonHelper.getCouponById(getActivity(),couponId);
             finalPrice = coupon.calcPrice(totalPrice);
             order.setUseCouponId(couponId);
         }else {
-            order.setUseCouponId(0);
+            order.setUseCouponId(-1);
         }
         order.setFinalPrice(finalPrice);
         return order;
@@ -355,6 +388,35 @@ public class DishFragment extends Fragment
     }
 
     public void setFeatureDishes(List<Dish> dishes){this.featureDishes = dishes;}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_COUPON: {
+                if (resultCode == RESULT_OK) {
+                    selectedCouponId = data.getIntExtra(SelectCouponActivity.RESULT_EXTRA_COUPON, -1);
+                } else {
+                    selectedCouponId = -1;
+                }
+                Log.d(TAG, "onActivityResult: "+selectedCouponId);
+                updateSelectCoupon();
+            }
+        }
+    }
+
+    private void loadSelectedCoupon(){
+        selectedCoupon = LocalJsonHelper.getCouponById(getActivity(),selectedCouponId);
+    }
+
+    private void updateSelectCoupon(){
+        if(selectedCouponId >-1){
+            loadSelectedCoupon();
+            String text = String.format(getText(R.string.tv_text_select_coupon_has).toString(),selectedCoupon.getName());
+            tv_select_coupon.setText(text);
+        }else {
+            tv_select_coupon.setText(getText(R.string.tv_text_select_coupon_none));
+        }
+    }
 
     @Override
     public void dishItemOnClick(View v) {

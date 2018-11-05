@@ -64,10 +64,10 @@ public class OrderActivity extends AppCompatActivity {
         totalPriceString =String.format("￥%.1f",order.getTotalPrice());
         finalPriceString = String.format("￥%.1f",order.getFinalPrice());
         int useCouponId = order.getUseCouponId();
-        if(useCouponId>0) {
+        if(useCouponId>-1) {
             coupon = LocalJsonHelper.getCouponById(this,useCouponId);
             couponName = coupon.getName();
-            couponPriceString = String.format("-￥%.2f",order.getTotalPrice()-order.getFinalPrice());
+            couponPriceString = String.format("-￥%.1f",order.getTotalPrice()-order.getFinalPrice());
             isUseCoupon =true;
         }else {
            isUseCoupon = false;

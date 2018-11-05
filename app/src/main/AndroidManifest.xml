@@ -22,7 +22,8 @@
             android:name=".MainTabActivity"
             android:label="@string/title_activity_menu" />
         <activity android:name=".OrderActivity" />
-        <activity android:name=".CouponActivity"></activity>
+        <activity android:name=".CouponActivity" />
+        <activity android:name=".SelectCouponActivity"></activity>
     </application>
 
 </manifest>
