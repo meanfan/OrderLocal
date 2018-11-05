@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">K7C自助点餐</string>
-    <string name="title_activity_menu">K7C自助点餐</string>
+    <string name="app_name">K7C点餐</string>
+    <string name="title_activity_menu">K7C点餐</string>
     <string name="menu_list">菜单</string>
     <string name="order_list">订单</string>
     <string name="mine">我的</string>

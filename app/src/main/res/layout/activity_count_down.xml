@@ -16,8 +16,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_margin="40sp"
-            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:minWidth="4dp"
+            android:textSize="22sp"
             android:textColor="#ffffff"
+            android:background="@drawable/item_count_down_skip"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </LinearLayout>

@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class StartCountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int recLen = 5;//跳过倒计时提示5秒
+    private int recLen = 5;
     private TextView tv;
     Timer timer = new Timer();
     private Handler handler;
@@ -28,9 +28,6 @@ public class StartCountDownActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_count_down);
         initView();
         timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
-        /**
-         * 正常情况下不点击跳过
-         */
         handler = new Handler();
         handler.postDelayed(runnable = new Runnable() {
             @Override
@@ -40,13 +37,15 @@ public class StartCountDownActivity extends AppCompatActivity implements View.On
                 startActivity(intent);
                 finish();
             }
-        }, 5000);//延迟5S后发送handler信息
+        }, (recLen-1)*1000);//延迟后发送handler信息
 
     }
 
     private void initView() {
         tv = findViewById(R.id.tv);//跳过
         tv.setOnClickListener(this);//跳过监听
+        tv.setText("跳过 " + recLen);
+        tv.setVisibility(View.VISIBLE);
     }
 
     TimerTask task = new TimerTask() {
@@ -57,10 +56,6 @@ public class StartCountDownActivity extends AppCompatActivity implements View.On
                 public void run() {
                     recLen--;
                     tv.setText("跳过 " + recLen);
-                    if (recLen < 0) {
-                        timer.cancel();
-                        tv.setVisibility(View.GONE);//倒计时到0隐藏字体
-                    }
                 }
             });
         }

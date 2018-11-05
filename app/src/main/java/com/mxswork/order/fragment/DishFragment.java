@@ -225,6 +225,7 @@ public class DishFragment extends Fragment
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),SelectCouponActivity.class);
                 intent.putExtra("user",user);
+                intent.putExtra("selectedCouponId",selectedCouponId);
                 startActivityForResult(intent, REQUEST_COUPON);
             }
         });
