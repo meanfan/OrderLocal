@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -53,11 +54,14 @@ public class SelectCouponActivity extends AppCompatActivity {
         if(userCouponInfos.length==0){
             findViewById(R.id.tv_coupon_none).setVisibility(View.VISIBLE);
         }
+        //TODO margin没效果
+        RadioGroup.LayoutParams rglp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        rglp.setMargins(5,15,0,0);
         rg_select_coupon = findViewById(R.id.rg_select_coupon);
         RadioButton firstRadioButton = (RadioButton) LayoutInflater.from(this).inflate(R.layout.item_select_coupon_radio_button,null);
         firstRadioButton.setId(0);
         firstRadioButton.setText("不使用优惠券");
-        rg_select_coupon.addView(firstRadioButton);
+        rg_select_coupon.addView(firstRadioButton,rglp);
         for(int i=0;i<userCouponInfos.length;i++){
             String name = LocalJsonHelper.getCouponById(this,userCouponInfos[i].getId()).getName();
             int amount = userCouponInfos[i].getCount();
@@ -65,7 +69,7 @@ public class SelectCouponActivity extends AppCompatActivity {
             RadioButton radioButton = (RadioButton) LayoutInflater.from(this).inflate(R.layout.item_select_coupon_radio_button,null);
             radioButton.setId(userCouponInfos[i].getId());  //为方便将优惠券id设置为radioButton的id
             radioButton.setText(title);
-            rg_select_coupon.addView(radioButton);
+            rg_select_coupon.addView(radioButton,rglp);
         }
         rg_select_coupon.clearCheck();
         if(selectedCouponId == -1){

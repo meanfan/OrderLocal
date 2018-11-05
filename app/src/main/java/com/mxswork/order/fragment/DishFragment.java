@@ -333,7 +333,6 @@ public class DishFragment extends Fragment
                     if(TextUtils.equals(info.getFlavour(),i1.getFlavour())){
                         return 0;
                     }else{
-                        //TODO 测试是否保持了顺序
                         return -1;
                     }
                 }
