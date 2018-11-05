@@ -80,15 +80,11 @@ public class DishFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_dish,container,false);
         return view;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated: ");
         initView();
         initListener();
         selectedCouponId  = -1;
@@ -96,6 +92,7 @@ public class DishFragment extends Fragment
         selected_dish_final_price = 0;
         desk = 1;
         cartDishInfos = new ArrayList<>();
+        cleanDishSelected();
     }
 
     @Override
