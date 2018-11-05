@@ -4,6 +4,7 @@ package com.mxswork.order.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -60,19 +61,16 @@ public class DishFragment extends Fragment
     private DishLeftListViewAdapter leftAdapter;
     private DishRightListViewAdapter rightAdapter;
     private Button btn_purchase;
-    private TextView tv_cart_info;
-    private TextView tv_cart_price;
-    private TextView tv_select_coupon;
+    private TextView tv_cart_info,tv_cart_total_price,tv_cart_final_price,tv_select_coupon;
     private int position;
-    private List<Dish> dishes;
-    private List<Dish> featureDishes;
+    private List<Dish> dishes,featureDishes;
     private List<OrderDishInfo> cartDishInfos;
     private List<String> tags;
     private List<Integer> firstTagInDishes;
     private HashMap<String,Object> savedVariables;
     private Coupon selectedCoupon;
     private int selectedCouponId = -1;
-    private float selected_dish_price;
+    private float selected_dish_total_price,selected_dish_final_price;
     private User user;
     private int desk;
 
@@ -93,9 +91,9 @@ public class DishFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         initView();
         initListener();
-        Log.d(TAG, "onActivityCreated: !!!!!!");
         selectedCouponId  = -1;
-        selected_dish_price = 0;
+        selected_dish_total_price = 0;
+        selected_dish_final_price = 0;
         desk = 1;
         cartDishInfos = new ArrayList<>();
     }
@@ -135,7 +133,8 @@ public class DishFragment extends Fragment
         btn_purchase =getActivity().findViewById(R.id.btn_purchase);
         tv_cart_info = getActivity().findViewById(R.id.tv_cart_info);
         tv_select_coupon = getActivity().findViewById(R.id.tv_select_coupon);
-        tv_cart_price = getActivity().findViewById(R.id.tv_cart_price);
+        tv_cart_total_price = getActivity().findViewById(R.id.tv_cart_total_price);
+        tv_cart_final_price = getActivity().findViewById(R.id.tv_cart_final_price);
 
     }
 
@@ -234,7 +233,7 @@ public class DishFragment extends Fragment
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: selectedCouponId:"+selectedCouponId);
-                final Order order = generateOrder(selected_dish_price,selectedCouponId);
+                final Order order = generateOrder(selected_dish_total_price,selectedCouponId);
                 Log.d(TAG, "onClick: "+order.toString());
                 LocalJsonHelper.insertOrder(getActivity(),order);
                 //Toast.makeText(getActivity(),"下单成功",Toast.LENGTH_SHORT).show();
@@ -257,18 +256,19 @@ public class DishFragment extends Fragment
 
     private void cleanDishSelected(){
         selectedCouponId = -1;
-        selected_dish_price = 0;
+        selected_dish_total_price = 0;
         selectedCoupon = null;
         cartDishInfos = new ArrayList<>();
         for(Dish dish:dishes){
             dish.setAmount(0);
         }
+        updateUser();
 
         //界面更新
         tv_select_coupon.setText(getText(R.string.tv_text_select_coupon_none));
         rightAdapter.updateDishesList(dishes);
         rightAdapter.notifyDataSetChanged();
-        updateCartLayout(0,0);
+        updateCartLayout();
 
 
     }
@@ -295,6 +295,7 @@ public class DishFragment extends Fragment
         float finalPrice = totalPrice;
         if(couponId>-1){
             Coupon coupon = LocalJsonHelper.getCouponById(getActivity(),couponId);
+            LocalJsonHelper.deleteUserCoupons(getActivity(),user.getUid(),couponId,1);
             finalPrice = coupon.calcPrice(totalPrice);
             order.setUseCouponId(couponId);
         }else {
@@ -383,6 +384,10 @@ public class DishFragment extends Fragment
         this.user = user;
     }
 
+    private void updateUser(){
+        user = LocalJsonHelper.getUserById(getActivity(),user.getUid());
+    }
+
     public void setDishes(List<Dish> dishes){
         this.dishes = dishes;
     }
@@ -400,6 +405,7 @@ public class DishFragment extends Fragment
                 }
                 Log.d(TAG, "onActivityResult: "+selectedCouponId);
                 updateSelectCoupon();
+                updateCartLayout();
             }
         }
     }
@@ -485,8 +491,8 @@ public class DishFragment extends Fragment
         dishAmount++;
         dish.setAmount(dishAmount);
         tv_num.setText(String.valueOf(dishAmount));
-        selected_dish_price+=dish.getPrice();
-        updateCartLayout(dishAmount,selected_dish_price);
+        selected_dish_total_price +=dish.getPrice();
+        updateCartLayout();
     }
 
     private void removeFromCart(Dish dish,TextView textView,ImageButton imageButton){
@@ -508,24 +514,38 @@ public class DishFragment extends Fragment
         }
         dish.setAmount(dishAmount);
         textView.setText(String.valueOf(dishAmount));
-        selected_dish_price-=dish.getPrice();
-        updateCartLayout(dishAmount,selected_dish_price);
+        selected_dish_total_price -=dish.getPrice();
+        updateCartLayout();
     }
 
-    private void updateCartLayout(int num, float price){
+    private void updateCartLayout(){
+        int num = cartDishInfos.size();
         String info;
-        String priceString;
+        String totalPriceString,finalPriceString;
         if(num == 0){
             info = "未选择商品";
-            priceString = " 0 元";
+            totalPriceString = "￥0";
+            finalPriceString = "￥0";
+            tv_cart_total_price.setVisibility(View.GONE);
             btn_purchase.setEnabled(false);
         }else {
             info = String.format("已选择 %d 件商品",num);
-            priceString = String.format(" %.2f 元",price);
+            totalPriceString = String.format("￥%.1f",selected_dish_total_price);
+            if(selectedCouponId>-1 && selectedCoupon!=null){
+                tv_cart_total_price.setVisibility(View.VISIBLE);
+                selected_dish_final_price = selectedCoupon.calcPrice(selected_dish_total_price);
+            }else {
+                tv_cart_total_price.setVisibility(View.GONE);
+                selected_dish_final_price = selected_dish_total_price;
+            }
             btn_purchase.setEnabled(true);
+            finalPriceString = String.format("￥%.1f",selected_dish_final_price);
         }
+
         tv_cart_info.setText(info);
-        tv_cart_price.setText(priceString);
+        tv_cart_final_price.setText(finalPriceString);
+        tv_cart_total_price.setText(totalPriceString);
+        tv_cart_total_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//添加删除线
     }
 
     private void showSnackBarMsg(String msg){

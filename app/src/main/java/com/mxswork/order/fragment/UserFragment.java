@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.mxswork.order.CouponActivity;
 import com.mxswork.order.R;
 import com.mxswork.order.pojo.User;
+import com.mxswork.order.utils.LocalJsonHelper;
 
 public class UserFragment extends Fragment {
     private static final String TAG = "UserFragment";
@@ -34,11 +35,16 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),CouponActivity.class);
+                updateUser();
                 intent.putExtra("user",user);
                 Log.d(TAG, "onClick: "+user.toString());
                 startActivity(intent);
             }
         });
+    }
+
+    private void updateUser(){
+        user = LocalJsonHelper.getUserById(getActivity(),user.getUid());
     }
 
     public void setUser(User user){

@@ -6,6 +6,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorRed">#ff0000</color>
+    <color name="colorNearRed">#FF6259</color>
     <color name="colorLittleRed">#FF5E82</color>
     <color name="colorLittleGray">#eeeeee</color>
     <color name="colorListWhiteBg">#FFFFFF</color>

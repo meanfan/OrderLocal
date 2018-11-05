@@ -168,7 +168,7 @@ public class LocalJsonHelper {
                             }
                         }
                         user.setCouponInfo(newCouponInfo);
-                        writeUsers(context,object2Json(user));
+                        writeUsers(context,object2Json(users));
                         return;
                     }
                 }

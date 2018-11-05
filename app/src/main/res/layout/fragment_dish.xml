@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true">
         <TextView
-            android:id="@+id/tv_cart_price"
+            android:id="@+id/tv_cart_final_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -46,6 +46,19 @@
             android:text="￥ 0"
             android:textColor="@color/colorRed"
             android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_cart_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_cart_final_price"
+            android:layout_alignBottom="@id/tv_cart_final_price"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:text="￥ 0"
+            android:textColor="@color/colorNearRed"
+            android:textSize="16sp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_cart_info"
             android:layout_width="wrap_content"

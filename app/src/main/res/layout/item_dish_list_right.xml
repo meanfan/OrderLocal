@@ -47,6 +47,7 @@
                 android:layout_marginBottom="2dp"
                 android:textStyle="bold"
                 android:text="Name"
+                android:lines="1"
                 android:textSize="18sp"/>
             <TextView
                 android:id="@+id/tv_dish_desc"
@@ -55,6 +56,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
                 android:textSize="15sp"
+                android:lines="2"
                 android:layout_below="@id/tv_dish_title"
                 android:text="describe"/>
             <RelativeLayout
@@ -68,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignBottom="@id/tv_dish_price"
+                    android:layout_marginBottom="2dp"
                     android:textSize="12sp"
                     android:textColor="@color/colorRed"
                     android:gravity="bottom"
@@ -77,13 +80,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/tv_dish_price_unit"
-                    android:textSize="18sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    android:textSize="20sp"
                     android:textColor="@color/colorRed"
                     android:text="0"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true">
                     <ImageButton
                         android:id="@+id/ib_dish_amount_sub"
                         android:layout_width="wrap_content"
@@ -91,14 +97,14 @@
                         android:layout_margin="2dp"
                         android:layout_alignParentLeft="true"
                         android:focusable="false"
-                        android:src="@drawable/ic_remove_circle_outline_red_24dp"
+                        android:src="@drawable/ic_remove_circle_outline_red_800_36dp"
                         android:background="@null"/>
                     <TextView
                         android:id="@+id/tv_dish_amount_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_vertical"
                         android:text="0"
                         android:textSize="18sp"
                         android:gravity="center"
@@ -110,7 +116,7 @@
                         android:layout_margin="2dp"
                         android:focusable="false"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_add_circle_red_24dp"
+                        android:src="@drawable/ic_add_circle_red_800_36dp"
                         android:background="@null"/>
                 </LinearLayout>
             </RelativeLayout>
