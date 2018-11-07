@@ -6,11 +6,6 @@ public class CouponDiscount extends Coupon{
     private float rate;
 
     @Override
-    public float calcPrice(Context context, Order order) {
-        return calcPrice(super.calcPrice(context,order));
-    }
-
-    @Override
     public float calcPrice(float price) {
         return price*rate;
     }

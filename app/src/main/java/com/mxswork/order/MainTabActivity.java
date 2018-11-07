@@ -157,7 +157,6 @@ public class MainTabActivity extends AppCompatActivity {
             return titles[position];
         }
 
-
     }
 }
 

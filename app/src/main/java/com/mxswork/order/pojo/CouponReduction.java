@@ -7,11 +7,6 @@ public class CouponReduction extends Coupon {
     private float reduction;
 
     @Override
-    public float calcPrice(Context context, Order order) {
-        return calcPrice(super.calcPrice(context,order));
-    }
-
-    @Override
     public float calcPrice(float price) {
         if(price>=threshold){
             float rst= price-reduction;

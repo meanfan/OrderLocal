@@ -26,20 +26,6 @@ public class Coupon implements CouponImpl {
     }
 
     @Override
-    public float calcPrice(Context context, Order order) {
-        if(order!=null){
-            float price_sum=0;
-            OrderDishInfo[] orderDishInfo = order.getDishes();
-            for(int i=0;i<orderDishInfo.length;i++){
-                Dish dish = LocalJsonHelper.getDishById(context,orderDishInfo[i].getId());
-                price_sum+=dish.getPrice()*orderDishInfo[i].getCount();
-            }
-            return price_sum;
-        }
-        return 0;
-    }
-
-    @Override
     public float calcPrice(float price) {
         return price;
     }

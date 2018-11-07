@@ -7,12 +7,11 @@ public class Dish {
     protected String name;
     protected String tag;
     protected boolean isFeature;
-    private List<String> flavour;
+    protected List<String> flavour;
     protected String desc;
     protected float price;
     protected String picPath;
     protected int amount;
-    protected String selectedFlavour;
 
 
     public List<String> getFlavour() {
@@ -85,13 +84,5 @@ public class Dish {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public String getSelectedFlavour() {
-        return selectedFlavour;
-    }
-
-    public void setSelectedFlavour(String selectedFlavour) {
-        this.selectedFlavour = selectedFlavour;
     }
 }

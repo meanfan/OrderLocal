@@ -95,12 +95,6 @@ public class DishFragment extends Fragment
         cleanDishSelected();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
     private void initView(){
 
         vf_banner = getActivity().findViewById(R.id.vf_banner);
@@ -505,7 +499,6 @@ public class DishFragment extends Fragment
         int dishAmount = dish.getAmount();
         dishAmount--;
         if(dishAmount == 0){
-            dish.setSelectedFlavour("");
             textView.setVisibility(View.INVISIBLE);
             imageButton.setVisibility(View.INVISIBLE);
         }
